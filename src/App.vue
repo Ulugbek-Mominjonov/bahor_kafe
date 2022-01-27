@@ -17,6 +17,22 @@ export default {
 </script>
 
 <style>
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  
   .my-container {
     width: 100%;
     max-width: 1400px;

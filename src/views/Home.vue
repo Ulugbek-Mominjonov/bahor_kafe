@@ -4,9 +4,7 @@
       <p class="stoll">Stollar</p>
       <ul class="stoll-list">
         <li v-for="item in nomer" :key="item">
-          <router-link class="link" to="#">
-            <Stollar :nomer="item"/>
-          </router-link>
+          <Stollar :nomer="item"/>
         </li>
       </ul>
     </div>
