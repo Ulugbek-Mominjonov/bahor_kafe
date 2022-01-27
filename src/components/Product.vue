@@ -63,7 +63,7 @@
   padding: 11px 0;
   background: radial-gradient(100% 2500% at 0% 50%, #C4C4C4 0%, rgba(196, 196, 196, 0.7) 100%);
   text-align: center;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 21px;
   color: black;
 }

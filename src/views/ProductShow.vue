@@ -14,7 +14,13 @@
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quibusdam, consectetur atque ducimus illum quasi eius aperiam dolore? Eos fuga cumque consectetur culpa autem repudiandae vero sequi vitae minus repellat numquam in nam, cum eum saepe ipsa nesciunt dolore aliquam eius possimus labore sed. Totam aut vero veritatis libero excepturi vitae perspiciatis repellendus beatae eum ad ab nobis non dolorum, id quam saepe dolore animi soluta dolores ex tempore dolor ea. Recusandae aspernatur optio, dolorem dicta laborum quam quia. Eos, adipisci porro voluptate, laudantium voluptatem itaque quas iste quaerat id animi reprehenderit sit corporis delectus ad, expedita quis voluptatum autem.
       </div>
       <div class="ordered-list">
-        <h2 class="product-name">Zakalar ro'yhati <span>{{$route.params.id }}</span> - stoll</h2>
+        <h2 class="product-name">Zakalar ro'yhati <span>{{$route.params.id }} - stoll</span></h2>
+        <ul class="selected-list">
+          <li class="selected-item">
+            <span class="left-col">Nomi</span>
+            <span class="rigth-col">Soni</span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -310,6 +316,40 @@ import Product from '@/components/Product.vue';
   padding: 10px;
 }
 .product-name {
-  
+  font-size: 18px;
+  line-height: 21px;
+  text-transform: uppercase;
+  text-align: center;
+}
+/* .ordered-list */
+.ordered-list {
+  width: 30% !important;
+  height: calc(100vh - 88px);
+}
+.product-name span {
+  margin-left: 10px;
+  color: red
+}
+.selected-list {
+  height: 75%;
+  padding: 5px;
+  margin: 0;
+  list-style-type: none;
+  background-color: #C4C4C4;
+  overflow-y: scroll;
+}
+.selected-item {
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 20px;
+  line-height: 28px;
+  color: #000000;
+  background-color: #fff;
+}
+.left-col {
+}
+.rigth-col {
 }
 </style>
