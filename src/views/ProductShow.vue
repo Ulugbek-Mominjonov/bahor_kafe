@@ -5,13 +5,16 @@
         center-active
       >
         <v-tab class="tab-item" v-for="(tab, index) in Alldata" :key="index"  @click="selectedItem(tab.category)">{{tab.category }}</v-tab>
+        <v-tab class="tab-item" @click="selectedItem('Barchasi')">Barchasi</v-tab>
       </v-tabs>
     </v-card>
     <div class="main-menu d-flex">
       <div class="products">
-        <Product v-for="(item, index) in Alldata" :key="index" :product="item" v-show="tabItem == item.category"/>
+          <Product v-for="(item, index) in Alldata" :key="index" :product="item" :stoll="$route.params.id" v-show="tabItem == item.category"/>
+          <template v-if="tabItem == 'Barchasi'">
+            <Product v-for="(item, index) in Alldata" :key="index" :product="item" :stoll="$route.params.id" />
+          </template>
         <br>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quibusdam, consectetur atque ducimus illum quasi eius aperiam dolore? Eos fuga cumque consectetur culpa autem repudiandae vero sequi vitae minus repellat numquam in nam, cum eum saepe ipsa nesciunt dolore aliquam eius possimus labore sed. Totam aut vero veritatis libero excepturi vitae perspiciatis repellendus beatae eum ad ab nobis non dolorum, id quam saepe dolore animi soluta dolores ex tempore dolor ea. Recusandae aspernatur optio, dolorem dicta laborum quam quia. Eos, adipisci porro voluptate, laudantium voluptatem itaque quas iste quaerat id animi reprehenderit sit corporis delectus ad, expedita quis voluptatum autem.
       </div>
       <div class="ordered-list">
         <h2 class="product-name">Zakalar ro'yhati <span>{{$route.params.id }} - stoll</span></h2>
@@ -19,6 +22,10 @@
           <li class="selected-item">
             <span class="left-col">Nomi</span>
             <span class="rigth-col">Soni</span>
+          </li>
+          <li class="selected-item" v-for="(item, index) in getStateById($route.params.id).product" :key="index">
+            <span class="left-col">{{item.name}}</span>
+            <span class="rigth-col">{{item.count}}</span>
           </li>
         </ul>
       </div>
@@ -28,6 +35,8 @@
 
 <script>
 import Product from '@/components/Product.vue';
+import { mapState, mapGetters } from 'vuex';
+import store from '@/store/index';
   export default {
     components: {
       Product
@@ -58,6 +67,26 @@ import Product from '@/components/Product.vue';
                 name: "Obi non",
                 cost: 300
               },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
             ]
           },
           {
@@ -65,22 +94,32 @@ import Product from '@/components/Product.vue';
             products: [
               {
                 id: 2,
-                name: "Obi non",
+                name: "Ko'k choy",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Kulcha non",
+                name: "Qora choy",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Malda non",
+                name: "Limonli choy",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Obi non",
+                name: "Mevali choy",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Mevali choy",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Mevali choy",
                 cost: 300
               },
             ]
@@ -90,22 +129,47 @@ import Product from '@/components/Product.vue';
             products: [
               {
                 id: 2,
-                name: "Obi non",
+                name: "Fanta",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Kulcha non",
+                name: "Cola",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Malda non",
+                name: "Pepsi",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Obi non",
+                name: "Dinay",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Dinay",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Dinay",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Dinay",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Dinay",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Dinay",
                 cost: 300
               },
             ]
@@ -140,12 +204,12 @@ import Product from '@/components/Product.vue';
             products: [
               {
                 id: 2,
-                name: "Obi non",
+                name: "Goshtli",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Kulcha non",
+                name: "Tuqumli",
                 cost: 300
               },
               {
@@ -156,6 +220,16 @@ import Product from '@/components/Product.vue';
               {
                 id: 2,
                 name: "Obi non",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Tuqumli",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Tuqumli",
                 cost: 300
               },
             ]
@@ -165,22 +239,32 @@ import Product from '@/components/Product.vue';
             products: [
               {
                 id: 2,
+                name: "Sezar",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Aliviya",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Pigudi",
+                cost: 300
+              },
+              {
+                id: 2,
                 name: "Obi non",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Kulcha non",
+                name: "Pigudi",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
+                name: "Pigudi",
                 cost: 300
               },
             ]
@@ -215,22 +299,17 @@ import Product from '@/components/Product.vue';
             products: [
               {
                 id: 2,
-                name: "Obi non",
+                name: "Qovoqli",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Kulcha non",
+                name: "Goshtli",
                 cost: 300
               },
               {
                 id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
+                name: "Kartoshkali",
                 cost: 300
               },
             ]
@@ -283,11 +362,36 @@ import Product from '@/components/Product.vue';
                 name: "Obi non",
                 cost: 300
               },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
+              {
+                id: 2,
+                name: "Obi non",
+                cost: 300
+              },
             ]
           },
         ],
         tabItem: "Nonlar"
       }
+    },
+    beforeRouteEnter(to, from, next) {
+      store.commit('SET_ACTIVE', to.params.id)
+      next()
+    },
+    computed: {
+      ...mapGetters(['getStateById']),
+      ...mapState({
+        selectedProducts: 'selectedProducts'
+      })
     },
     methods: {
       selectedItem(item) {

@@ -2,7 +2,7 @@
   <div class="product-wrapper">
     <h2 class="product-name">{{product.category}}</h2>
     <ul class="d-flex product-list">
-      <li class="product-item" v-for="(item, index) in product.products" :key="index">
+      <li class="product-item" v-for="(item, index) in product.products" :key="index" @click="addProduct(item, stoll)">
         <span class="cost">{{item.cost}}</span>
         <span class="name">{{item.name}}</span>
       </li>
@@ -16,6 +16,18 @@
       product: {
         type: Object
       },
+      stoll: {
+        type: String
+      }
+    },
+    methods: {
+      addProduct(product, stoll) {
+        let data = {
+          product,
+          stoll
+        }
+        this.$store.commit('ADD_PRODUCT', data)
+      }
     },
   }
 </script>

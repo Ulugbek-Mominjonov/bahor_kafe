@@ -1,6 +1,6 @@
 <template>
-  <router-link class="link stoll-link" :to="{name: 'Menu', params: {id: nomer}}">
-    <div class="stoll" @click="changeColor" :class="{active: isActive}">{{nomer}}</div>
+  <router-link class="link stoll-link" :to="{name: 'Menu', params: {id: nomer.nomer}}">
+    <div class="stoll" @click="changeColor" :class="{active: nomer.isActive}">{{nomer.nomer}}</div>
   </router-link>
 </template>
 
@@ -8,8 +8,11 @@
   export default {
     props: {
       nomer: {
-        type: Number,
+        type: Object,
       },
+      afitsant: {
+        type: String
+      }
     },
     data() {
       return {
@@ -18,7 +21,6 @@
     },
     methods: {
       changeColor() {
-        console.log("ishladi");
         this.isActive = true
       }
     }

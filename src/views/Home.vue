@@ -3,14 +3,15 @@
       <h1 class=afitsant>Afitsant: <span>{{$route.params.id }}</span></h1>
       <p class="stoll">Stollar</p>
       <ul class="stoll-list">
-        <li v-for="item in nomer" :key="item">
-          <Stollar :nomer="item"/>
+        <li v-for="(item, index) in stollar" :key="index">
+          <Stollar :nomer="item" :afitsant="$route.params.id"/>
         </li>
       </ul>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Stollar from "../components/Stollar";
 
 export default {
@@ -20,13 +21,17 @@ export default {
   },
   data() {
     return {
-      nomer: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
       afitsant: ""
     }
   },
   created() {
     this.afitsant = this.$route.params.id 
-  }
+  },
+  computed: {
+    ...mapState({
+      stollar: 'stollar'
+    })
+  },
 };
 </script>
 <style scoped>
