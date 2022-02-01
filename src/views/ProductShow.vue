@@ -23,11 +23,48 @@
             <span class="left-col">Nomi</span>
             <span class="rigth-col">Soni</span>
           </li>
-          <li class="selected-item" v-for="(item, index) in getStateById($route.params.id).product" :key="index">
+          <li class="selected-item" v-for="(item, index) in getStateById($route.params.id).product" :key="index" @click="selected_item(index)" :class="{'active-el': selected==index ? true : false}"> 
             <span class="left-col">{{item.name}}</span>
             <span class="rigth-col">{{item.count}}</span>
           </li>
         </ul>
+
+        <div class="d-flex justify-space-between my-5 changing-buttons">
+          <v-btn
+            class="minus-btn"
+            dark
+            color="error"
+            :disabled="selected==null ? true : false"
+            @click="remove_item($route.params.id)"
+          >
+            <v-icon dark>
+              mdi-minus
+            </v-icon>
+          </v-btn>
+
+          <v-btn
+            class="plus-btn"
+            dark
+            color="indigo"
+            :disabled="selected==null ? true : false"
+            @click="add_item($route.params.id)"
+          >
+            <v-icon dark>
+              mdi-plus
+            </v-icon>
+          </v-btn>
+        </div>
+
+        <div class="d-flex justify-center mb-5">
+          <v-btn
+            class="order-btn"
+            dark
+            color="success"
+            @click="order($route.params.id)"
+          >
+            Zakaz berish
+          </v-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -380,7 +417,10 @@ import store from '@/store/index';
             ]
           },
         ],
-        tabItem: "Nonlar"
+        tabItem: "Nonlar",
+        selected: null,
+        stoll: null
+
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -396,6 +436,35 @@ import store from '@/store/index';
     methods: {
       selectedItem(item) {
         this.tabItem = item
+      },
+      selected_item(index) {
+        this.selected = index
+      },
+      remove_item(pay) {
+        let index = this.selected
+        let data = {
+          pay, 
+          index
+        }
+        store.dispatch('minus_count', data).then (response => {
+          this.selected = response;
+        })
+      },
+      add_item(pay) {
+        let index = this.selected
+        let data = {
+          pay, 
+          index
+        }
+        store.dispatch('plus_count', data).then (response => {
+          this.selected = response;
+        })
+      },
+      order(value) {
+        store.dispatch('oderedList', value)
+          .then(response => {
+            this.$router.push({name: 'OrderedFood'})
+          })
       }
     }
   }
@@ -452,8 +521,13 @@ import store from '@/store/index';
   color: #000000;
   background-color: #fff;
 }
-.left-col {
+.changing-buttons {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
-.rigth-col {
+.active-el {
+  background-color: #218838;
+  color: #fff;
 }
 </style>

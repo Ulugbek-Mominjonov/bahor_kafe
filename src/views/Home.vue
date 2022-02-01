@@ -13,7 +13,7 @@
 <script>
 import { mapState } from 'vuex';
 import Stollar from "../components/Stollar";
-
+import store from '@/store/index';
 export default {
   name: "Home",
   components: {
@@ -25,7 +25,8 @@ export default {
     }
   },
   created() {
-    this.afitsant = this.$route.params.id 
+    this.afitsant = this.$route.params.id
+    store.commit('SET_AFITSANT', this.afitsant)
   },
   computed: {
     ...mapState({

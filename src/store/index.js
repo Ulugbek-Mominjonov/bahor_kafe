@@ -70,9 +70,12 @@ export default new Vuex.Store({
         isActive: false
       },
     ],
-    afitsantlar: []
+    orderedList: {}
   },
   mutations: {
+    SET_AFITSANT(state, value){
+      state.afitsant = value;
+    },
     ADD_PRODUCT(state, value) {
       let item = state.selectedProducts.findIndex(item => item.stoll_nomer == value.stoll)
       let index = state.selectedProducts[item].product.findIndex(item => item.name == value.product.name)
@@ -83,7 +86,8 @@ export default new Vuex.Store({
         state.selectedProducts[item].product.push({
           id: value.product.id,
           name: value.product.name,
-          count: 1
+          count: 1,
+          cost: value.product.cost
         })
       }
     },
@@ -96,9 +100,44 @@ export default new Vuex.Store({
           product: []
         })
       }
+    },
+    REMOVE_COUNT(state, {foo, el, index}) {
+      if(foo > 1){
+        state.selectedProducts[el].product[index].count -= 1
+      }
+      else if(foo == 1) {
+        state.selectedProducts[el].product.splice(index, 1)
+      }
+    },
+    ADD_COUNT(state, {el, index}) {
+      state.selectedProducts[el].product[index].count += 1
+    },
+    SET_LIST(state, value) {
+      state.orderedList = value;
     }
   },
-  actions: {},
+  actions: {
+    minus_count({commit, state}, value) {
+      let el = state.selectedProducts.findIndex(item => item.stoll_nomer == value.pay)
+      let foo = state.selectedProducts[el].product[value.index].count
+      let index = value.index
+      commit('REMOVE_COUNT', {foo, el, index})
+      if(foo == 1) return null
+      else {
+        return value.index;
+      }
+    },
+    plus_count({commit, state}, value) {
+      let el = state.selectedProducts.findIndex(item => item.stoll_nomer == value.pay)
+      let index = value.index
+      commit('ADD_COUNT', {el, index})
+      return value.index;
+    },
+    oderedList({commit, getters}, payload) {
+      let order = getters.getStateById(payload)
+      commit("SET_LIST", order)
+    }
+  },
   modules: {},
   getters: {
     getStateById: state => id => {

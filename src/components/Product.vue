@@ -17,7 +17,7 @@
         type: Object
       },
       stoll: {
-        type: String
+        type: [Number, String]
       }
     },
     methods: {

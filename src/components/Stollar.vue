@@ -1,6 +1,6 @@
 <template>
   <router-link class="link stoll-link" :to="{name: 'Menu', params: {id: nomer.nomer}}">
-    <div class="stoll" @click="changeColor" :class="{active: nomer.isActive}">{{nomer.nomer}}</div>
+    <div class="stoll" :class="{active: nomer.isActive}">{{nomer.nomer}}</div>
   </router-link>
 </template>
 
@@ -17,11 +17,6 @@
     data() {
       return {
         isActive: false
-      }
-    },
-    methods: {
-      changeColor() {
-        this.isActive = true
       }
     }
   }

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import Menu from '../views/ProductShow.vue';
+import OrderedFood from '../views/OrderedFood.vue';
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,11 @@ const routes = [
     name: "Menu",
     component: Menu,
     props: true
+  },
+  {
+    path: "/orderFood",
+    name: "OrderedFood",
+    component: OrderedFood,
   },
 ];
 
