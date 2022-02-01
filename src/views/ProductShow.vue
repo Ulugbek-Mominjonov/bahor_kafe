@@ -418,9 +418,7 @@ import store from '@/store/index';
           },
         ],
         tabItem: "Nonlar",
-        selected: null,
-        stoll: null
-
+        selected: null
       }
     },
     beforeRouteEnter(to, from, next) {
@@ -462,7 +460,7 @@ import store from '@/store/index';
       },
       order(value) {
         store.dispatch('oderedList', value)
-          .then(response => {
+          .then(() => {
             this.$router.push({name: 'OrderedFood'})
           })
       }
