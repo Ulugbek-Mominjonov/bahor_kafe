@@ -44,19 +44,21 @@ import { mapState } from 'vuex';
         let data = []
         let AllSumm = 0
         console.log(this.orderedList.product);
-        this.orderedList.product.forEach(element => {
+        if(this.orderedList.product) {
+          this.orderedList.product.forEach(element => {
+            data.push({
+              name: element.name,
+              cost: element.cost,
+              count: element.count,
+              summ: element.cost*element.count
+            })
+            AllSumm += element.cost*element.count
+          });
           data.push({
-            name: element.name,
-            cost: element.cost,
-            count: element.count,
-            summ: element.cost*element.count
+            name: "Umumiy summa",
+            summ: AllSumm
           })
-          AllSumm += element.cost*element.count
-        });
-        data.push({
-          name: "Umumiy summa",
-          summ: AllSumm
-        })
+        }
         return data
       }
 
