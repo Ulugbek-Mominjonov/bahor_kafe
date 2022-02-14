@@ -69,6 +69,39 @@
             Zakaz berish
           </v-btn>
         </div>
+
+        <div class="d-flex justify-space-between mb-5">
+          <v-btn
+            class="order-btn"
+            dark
+            color="orange darken-2"
+            outlined
+            @click="back()"
+          >
+            <v-icon
+              dark
+              left
+            >
+              mdi-arrow-left
+            </v-icon>
+            Orqaga
+          </v-btn>
+          <v-btn
+            class="order-btn"
+            dark
+            color="red"
+            outlined
+            @click="cancel()"
+          >
+            Bekor qilish
+            <v-icon
+              dark
+              right
+            >
+              mdi-cancel
+            </v-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
   </div>
@@ -164,6 +197,12 @@ import store from '@/store/index';
           .then(() => {
             this.$router.push("/orderFood");
           })
+      },
+      back() {
+        this.$router.push("/home");
+      },
+      cancel() {
+        
       }
     }
   }
@@ -197,6 +236,7 @@ import store from '@/store/index';
 .ordered-list {
   width: 30% !important;
   height: calc(100vh - 88px);
+  overflow-y: scroll;
 }
 .product-name span {
   margin-left: 10px;
