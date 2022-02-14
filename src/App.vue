@@ -17,6 +17,9 @@ export default {
 </script>
 
 <style>
+  html {
+    box-sizing: border-box;
+  }
   /* width */
   ::-webkit-scrollbar {
     width: 7px;

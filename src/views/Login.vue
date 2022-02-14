@@ -2,14 +2,19 @@
   <div class="Login">
     <v-form class="form">
       <v-text-field
+        label="Login"
+        prepend-icon="mdi-login"
+        v-model="login"
+      ></v-text-field>
+      <v-text-field
         label="Password"
         :type="showPassword ? 'text' : 'password'"
         prepend-icon="mdi-lock"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="showPassword = !showPassword"
-        v-model="login"
+        v-model="parol"
       ></v-text-field>
-      <v-btn color="info" class="btn" @click.prevent="signIn">
+      <v-btn color="info" class="btn" @click.prevent="sign_in">
         Login
         <v-icon class="ml-1">mdi-login</v-icon>
       </v-btn>
@@ -18,8 +23,8 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
+import store from '@/store/index';
+import {mapGetters} from 'vuex';
 export default {
   name: "Home",
   components: {},
@@ -27,11 +32,27 @@ export default {
     return {
       showPassword: false,
       login: null,
+      parol: null
     };
   },
+  computed: {
+    ...mapGetters('auth',{
+        getterLoginStatus:'getLoginStatus',
+        getterAuthData: 'getAuthData'
+      })
+  },
   methods: {
-    signIn() {
-       this.$router.push({ name: "Home", params: {id: this.login} });
+      async sign_in() {
+      let data = {username: this.login, password: this.parol}
+      await store.dispatch('auth/login', data)
+        .then(() => {
+          if(this.getterAuthData.role == "waiter")
+          this.$router.push({ name: "Home", params: {id: this.login} });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Noto'gri malumot")
+        })
     }
   },
 };

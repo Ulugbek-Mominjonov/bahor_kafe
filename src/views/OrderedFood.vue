@@ -3,7 +3,7 @@
     <div class="component-info text-center mt-5 mb-3">
       <h2 class="component-title">"Bahor kafe"</h2>
       <p class="component-text">Bag'dod tumani, Bag'dod shaxarchasi</p>
-      <p class="stoll-number">{{orderedList.stoll_nomer}} - stoll</p>
+      <p class="stoll-number">{{ordered.number}} - stoll</p>
     </div>
     <v-data-table
     :headers="headers"
@@ -37,26 +37,23 @@ import { mapState } from 'vuex';
        
     },
     computed: {
-      ...mapState({
-        orderedList: 'orderedList'
+      ...mapState('stollar',{
+        ordered: 'ordered'
       }),
       foods() {
         let data = []
-        let AllSumm = 0
-        console.log(this.orderedList.product);
-        if(this.orderedList.product) {
-          this.orderedList.product.forEach(element => {
+        if(this.ordered.order) {
+          this.ordered.order.detail.forEach(element => {
             data.push({
-              name: element.name,
-              cost: element.cost,
-              count: element.count,
-              summ: element.cost*element.count
+              name: element.foodDetail.name,
+              cost: element.foodDetail.price,
+              count: parseInt(element.quantity),
+              summ: element.price
             })
-            AllSumm += element.cost*element.count
           });
           data.push({
-            name: "Umumiy summa",
-            summ: AllSumm
+            "name": "Umumiy summa",
+            "summ": parseInt(this.ordered.order.total)
           })
         }
         return data

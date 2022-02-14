@@ -1,16 +1,18 @@
 <template>
   <div class="product-wrapper">
-    <h2 class="product-name">{{product.category}}</h2>
+    <h2 class="product-name">{{product.name}}</h2>
     <ul class="d-flex product-list">
-      <li class="product-item" v-for="(item, index) in product.products" :key="index" @click="addProduct(item, stoll)">
-        <span class="cost">{{item.cost}}</span>
+      <li class="product-item" v-for="(item) in product.foods" :key="item.id" @click="addProduct(item, stoll)">
+        <span class="cost">{{item.price}}</span>
         <span class="name">{{item.name}}</span>
+        <img class="img" :src="item.image" alt="rasm">
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import store from '@/store/index';
   export default {
     props: {
       product: {
@@ -18,15 +20,14 @@
       },
       stoll: {
         type: [Number, String]
+      },
+      category: {
+        type: String
       }
     },
     methods: {
-      addProduct(product, stoll) {
-        let data = {
-          product,
-          stoll
-        }
-        this.$store.commit('ADD_PRODUCT', data)
+      addProduct(product) {
+        store.dispatch('stollar/food', product)
       }
     },
   }
@@ -66,6 +67,7 @@
   font-size: 10px;
   line-height: 12px;
   color: #000000;
+  z-index: 5;
 }
 .name {
   position: absolute;
@@ -78,5 +80,14 @@
   font-size: 17px;
   line-height: 21px;
   color: black;
+  z-index: 5;
+}
+.img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
 }
 </style>

@@ -25,12 +25,11 @@ export default {
     }
   },
   created() {
-    this.afitsant = this.$route.params.id
-    store.commit('SET_AFITSANT', this.afitsant)
+    store.dispatch('stollar/table')
   },
   computed: {
-    ...mapState({
-      stollar: 'stollar'
+    ...mapState('stollar', {
+      stollar: 'table',
     })
   },
 };

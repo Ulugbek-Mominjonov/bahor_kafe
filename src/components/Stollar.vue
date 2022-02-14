@@ -1,6 +1,8 @@
 <template>
-  <router-link class="link stoll-link" :to="{name: 'Menu', params: {id: nomer.nomer}}">
-    <div class="stoll" :class="{active: nomer.isActive}">{{nomer.nomer}}</div>
+  <router-link class="link stoll-link" :to="{name: 'Menu', params: {id: nomer.id}}">
+    <div 
+      class="stoll"
+      :class="{active: !nomer.isFree}">{{nomer.number}}</div>
   </router-link>
 </template>
 
@@ -12,13 +14,8 @@
       },
       afitsant: {
         type: String
-      }
+      },
     },
-    data() {
-      return {
-        isActive: false
-      }
-    }
   }
 </script>
 

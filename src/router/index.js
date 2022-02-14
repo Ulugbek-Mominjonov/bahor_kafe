@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import Menu from '../views/ProductShow.vue';
 import OrderedFood from '../views/OrderedFood.vue';
+import AccountantWindow from '../views/AccountantWin.vue';
 
 Vue.use(VueRouter);
 
@@ -14,7 +15,7 @@ const routes = [
     component: Login,
   },
   {
-    path: "/home/:id",
+    path: "/home",
     name: "Home",
     component: Home,
     props: true
@@ -30,6 +31,11 @@ const routes = [
     name: "OrderedFood",
     component: OrderedFood,
   },
+  {
+    path: "/accountant",
+    name: "AccountantWindow",
+    component: AccountantWindow,
+  },
 ];
 
 const router = new VueRouter({
@@ -38,4 +44,8 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !localStorage.getItem('access_token')) next({ name: 'Login' })
+  else next()
+})
 export default router;

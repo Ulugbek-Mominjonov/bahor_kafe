@@ -4,28 +4,32 @@
       <v-tabs
         center-active
       >
-        <v-tab class="tab-item" v-for="(tab, index) in Alldata" :key="index"  @click="selectedItem(tab.category)">{{tab.category }}</v-tab>
+        <v-tab class="tab-item" v-for="(tab, index) in allFoods" :key="index"  @click="selectedItem(tab.name)">{{tab.name }}</v-tab>
         <v-tab class="tab-item" @click="selectedItem('Barchasi')">Barchasi</v-tab>
       </v-tabs>
     </v-card>
     <div class="main-menu d-flex">
       <div class="products">
-          <Product v-for="(item, index) in Alldata" :key="index" :product="item" :stoll="$route.params.id" v-show="tabItem == item.category"/>
+          <Product v-for="(item, index) in allFoods" :key="index" :product="item" :stoll="tableId" v-show="tabItem == item.name"/>
           <template v-if="tabItem == 'Barchasi'">
-            <Product v-for="(item, index) in Alldata" :key="index" :product="item" :stoll="$route.params.id" />
+            <Product v-for="(item, index) in allFoods" :key="index.name" :product="item" :stoll="tableId"/>
           </template>
         <br>
       </div>
       <div class="ordered-list">
-        <h2 class="product-name">Zakalar ro'yhati <span>{{$route.params.id }} - stoll</span></h2>
+        <h2 class="product-name">Zakalar ro'yhati <span>{{tableId }} - stoll</span></h2>
         <ul class="selected-list">
           <li class="selected-item">
             <span class="left-col">Nomi</span>
             <span class="rigth-col">Soni</span>
           </li>
-          <li class="selected-item" v-for="(item, index) in getStateById($route.params.id).product" :key="index" @click="selected_item(index)" :class="{'active-el': selected==index ? true : false}"> 
-            <span class="left-col">{{item.name}}</span>
-            <span class="rigth-col">{{item.count}}</span>
+          <li class="selected-item" @click="selected_item(-1)" :class="{'active-el': selected==-1 ? true : false}">
+            <span class="left-col">Klent soni</span>
+            <span class="rigth-col">{{getClientCount}}</span>
+          </li>
+          <li class="selected-item" v-for="(item, index) in getDetail" :key="index" @click="selected_item(item.food)" :class="{'active-el': selected==item.food ? true : false}">
+            <span class="left-col">{{item.foodDetail.name}}</span>
+            <span class="rigth-col">{{parseInt(item.quantity)}}</span>
           </li>
         </ul>
 
@@ -35,7 +39,7 @@
             dark
             color="error"
             :disabled="selected==null ? true : false"
-            @click="remove_item($route.params.id)"
+            @click="remove_item()"
           >
             <v-icon dark>
               mdi-minus
@@ -47,7 +51,7 @@
             dark
             color="indigo"
             :disabled="selected==null ? true : false"
-            @click="add_item($route.params.id)"
+            @click="add_item()"
           >
             <v-icon dark>
               mdi-plus
@@ -60,7 +64,7 @@
             class="order-btn"
             dark
             color="success"
-            @click="order($route.params.id)"
+            @click="order()"
           >
             Zakaz berish
           </v-btn>
@@ -80,356 +84,36 @@ import store from '@/store/index';
     },
     data() {
       return {
-        Alldata: [
-          {
-            category: "Nonlar",
-            products: [
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Kulcha non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Choylar",
-            products: [
-              {
-                id: 2,
-                name: "Ko'k choy",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Qora choy",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Limonli choy",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Mevali choy",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Mevali choy",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Mevali choy",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Ichimliklar",
-            products: [
-              {
-                id: 2,
-                name: "Fanta",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Cola",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Pepsi",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Dinay",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Dinay",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Dinay",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Dinay",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Dinay",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Dinay",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Fast Food",
-            products: [
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Kulcha non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Pitsa",
-            products: [
-              {
-                id: 2,
-                name: "Goshtli",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Tuqumli",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Tuqumli",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Tuqumli",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Salatlar",
-            products: [
-              {
-                id: 2,
-                name: "Sezar",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Aliviya",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Pigudi",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Pigudi",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Pigudi",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Coffe",
-            products: [
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Kulcha non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Somsa",
-            products: [
-              {
-                id: 2,
-                name: "Qovoqli",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Goshtli",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Kartoshkali",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Ovqatlar",
-            products: [
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Kulcha non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-            ]
-          },
-          {
-            category: "Sharbatlar",
-            products: [
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Kulcha non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Malda non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-              {
-                id: 2,
-                name: "Obi non",
-                cost: 300
-              },
-            ]
-          },
-        ],
-        tabItem: "Nonlar",
+        tabItem: "Barchasi",
         selected: null
       }
     },
-    beforeRouteEnter(to, from, next) {
-      store.commit('SET_ACTIVE', to.params.id)
-      next()
+    created() {
+      store.dispatch('stollar/foods')
+      let key = parseInt(this.$route.params.id)
+      store.dispatch('stollar/detail', key)
     },
     computed: {
       ...mapGetters(['getStateById']),
-      ...mapState({
-        selectedProducts: 'selectedProducts'
-      })
+      ...mapState('stollar',{
+        allFoods: "foods",
+        ordered: "ordered",
+      }),
+      tableId() {
+        return this.$route.params.id
+      },
+      getClientCount() {
+        if(this.ordered && this.ordered.order) {
+          return this.ordered.order.clientCount
+        }
+        return null;
+      },
+      getDetail() {
+        if(this.ordered && this.ordered.order) {
+          return this.ordered.order.detail
+        }
+        return null;
+      },
     },
     methods: {
       selectedItem(item) {
@@ -438,30 +122,47 @@ import store from '@/store/index';
       selected_item(index) {
         this.selected = index
       },
-      remove_item(pay) {
+      remove_item() {
         let index = this.selected
-        let data = {
-          pay, 
-          index
+        if(index != -1) {
+          store.dispatch('stollar/minus_count', index)
+          .then(response => {
+            this.selected = response;
+          })
+        } else {
+          store.dispatch('stollar/clientMinus', index)
+            .then(res => this.selected = res)
         }
-        store.dispatch('minus_count', data).then (response => {
-          this.selected = response;
-        })
       },
-      add_item(pay) {
+      add_item() {
         let index = this.selected
-        let data = {
-          pay, 
-          index
+        if(index != -1) {
+          store.dispatch('stollar/plus_count', index).then (response => {
+            this.selected = response;
+          })
+        } else {
+          store.dispatch('stollar/clientAdd', index)
+            .then(res => this.selected = res)
         }
-        store.dispatch('plus_count', data).then (response => {
-          this.selected = response;
-        })
       },
-      order(value) {
-        store.dispatch('oderedList', value)
+      async order() {
+        let getOrder = this.ordered
+        let data = {
+          "table": getOrder.id,
+          "client_count": getOrder.order.clientCount,
+          "details": []
+        };
+        getOrder.order.detail.forEach(item => {
+          data.details.push({
+            "food": item.food,
+            "quantity": item.quantity
+          })
+        });
+        await store.dispatch('stollar/setOrder', data)
+        let key = parseInt(this.$route.params.id)
+        await store.dispatch('stollar/detail', key)
           .then(() => {
-            this.$router.push({name: 'OrderedFood'})
+            this.$router.push("/orderFood");
           })
       }
     }
