@@ -5,7 +5,10 @@ import Home from "../views/Home.vue";
 import Menu from '../views/ProductShow.vue';
 import OrderedFood from '../views/OrderedFood.vue';
 import AccountantWindow from '../views/AccountantWin.vue';
-
+import Director from '@/views/Director.vue';
+import ProductDetailIncome from '@/views/ProductDetailIncome.vue';
+import ProductDetailOutcome from '@/views/ProductDetailOutcome.vue';
+import Sales from '@/views/Sales.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -35,6 +38,29 @@ const routes = [
     path: "/accountant",
     name: "AccountantWindow",
     component: AccountantWindow,
+  },
+  {
+    path: "/director",
+    name: "director",
+    component: Director,
+    props: true
+  },
+  {
+    path: "/productDetailIncome/:id",
+    name: "productDetailIncome",
+    component: ProductDetailIncome,
+    props: true
+  },
+  {
+    path: "/productDetailOutcome/:id",
+    name: "productDetailOutcome",
+    component: ProductDetailOutcome,
+    props: true
+  },
+  {
+    path: "/Sales",
+    name: "Sales",
+    component: Sales,
   },
 ];
 

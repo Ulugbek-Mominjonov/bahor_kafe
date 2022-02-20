@@ -10,6 +10,7 @@
     :items="foods"
     :items-per-page="5"
     class="elevation-1"
+    @click:row="foo"
     light
     ></v-data-table>
   </div>
@@ -26,6 +27,7 @@ import { mapState } from 'vuex';
             align: 'start',
             sortable: false,
             value: 'name',
+            class: 'header-class'
           },
           { text: "Narxi (1ta) (so'm)", value: "cost" },
           { text: "Miqdori", value: "count" },
@@ -48,17 +50,28 @@ import { mapState } from 'vuex';
               name: element.foodDetail.name,
               cost: element.foodDetail.price,
               count: parseInt(element.quantity),
-              summ: element.price
+              summ: element.price,
             })
           });
           data.push({
             "name": "Umumiy summa",
             "summ": parseInt(this.ordered.order.total)
           })
+          data.unshift({
+            name: "Klentlar soni",
+            cost: 1000,
+            count: this.ordered.order.clientCount,
+            summ: this.ordered.order.clientCost
+          })
         }
         return data
       }
 
+    },
+    methods: {
+      foo(e) {
+        console.log(e);
+      }
     }
   }
 </script>

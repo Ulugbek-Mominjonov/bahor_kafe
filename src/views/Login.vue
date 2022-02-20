@@ -35,6 +35,9 @@ export default {
       parol: null
     };
   },
+  created() {
+    store.commit('director/DisabledSideBar')
+  },
   computed: {
     ...mapGetters('auth',{
         getterLoginStatus:'getLoginStatus',
@@ -46,8 +49,18 @@ export default {
       let data = {username: this.login, password: this.parol}
       await store.dispatch('auth/login', data)
         .then(() => {
-          if(this.getterAuthData.role == "waiter")
-          this.$router.push({ name: "Home", params: {id: this.login} });
+          if(this.getterAuthData.role == "waiter"){
+            store.commit('director/DisabledSideBar')
+            this.$router.push({ name: "Home", params: {id: this.login} });
+          }
+          else if(this.getterAuthData.role == "cashier") {
+            store.commit('director/DisabledSideBar')
+            this.$router.push("/accountant");
+          }
+          else if(this.getterAuthData.role == "director") {
+            store.commit('director/ActiveSideBar')
+            this.$router.push("/director");
+          }
         })
         .catch((err) => {
           console.log(err);

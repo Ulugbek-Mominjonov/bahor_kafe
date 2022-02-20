@@ -11,8 +11,12 @@
     "axios": "^0.25.0",
     "axios-case-converter": "^0.9.0",
     "core-js": "^3.6.5",
+    "luxon": "^2.3.0",
+    "moment": "^2.29.1",
     "vue": "^2.6.11",
+    "vue-moment": "^4.1.0",
     "vue-router": "^3.2.0",
+    "vuejs-datepicker": "^1.6.2",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0"
   },

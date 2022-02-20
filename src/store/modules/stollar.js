@@ -40,7 +40,7 @@ export const mutations = {
           name: value.name,
           price: value.price
         },
-        quantity: 0
+        quantity: 1
       })
     }
   },
@@ -125,6 +125,11 @@ export const actions = {
     let response = await EventService.setOrder(value).catch(err => console.log(err))
     commit("FOO")
     console.log(response.data);
+  },
+  async deleteOrders({state}) {
+    let id = state.ordered.order.id
+    await EventService.deleteOrder(id)
+      .then(res => console.log(res))
   }
 };
 

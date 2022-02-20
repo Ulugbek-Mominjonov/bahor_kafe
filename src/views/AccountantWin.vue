@@ -6,30 +6,31 @@
             <h2 class="component-title">"Bahor kafe"</h2>
             <p class="component-text">Bag'dod tumani, Bag'dod shaxarchasi</p>
             <p class="stoll-number">
-              <span class="table-number">{{food_list.number}} - stoll</span>
-              <span class="table-afitsant">Afitsant: {{food_list.order.waiter}}</span>
+              <span class="table-number">{{tableId}} - stoll</span>
+              <span class="table-afitsant">Afitsant: {{getAfitsant}}</span>
             </p>
           </div>
           <v-data-table
             :headers="headers"
-            :items="data"
+            :items="foods"
             :items-per-page="10"
             class="elevation-1"
             light
+            no-data-text="Bu stoll bo'sh"
           ></v-data-table>
           <div class="d-flex total">
             <p class="total-heading">Umumiy summa</p>
-            <p class="total-cost">{{food_list.order.total}}</p>
+            <p class="total-cost">{{getTotal}}</p>
           </div>
         </div>
-        <div class="d-flex justify-space-between my-5 buttons">
-            <v-btn class="button" depressed color="primary">
+        <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
+            <v-btn class="button" color="primary">
               Chek chiqarish
             </v-btn>
-            <v-btn class="button" depressed color="primary">
+            <v-btn class="button" dark color="primary" @click="pay('cash')">
               Naqd pul orqali to'lash
             </v-btn>
-            <v-btn class="button" depressed color="primary">
+            <v-btn class="button" dark color="primary" @click="pay('card')">
               Plastik orqali to'lash
             </v-btn>
           </div>
@@ -37,13 +38,15 @@
     <div class="tables">
       <h1 class="tables-title">Stollar</h1>
       <ul class="table-list">
-        <li class="table-item" v-for="table in tables" :key="table.id">{{table.number}}</li>
+        <li class="table-item" v-for="table in tables" :key="table.id"  :class="{active: !table.isFree, yellow: activeTable==table.id ? true: false}" @click="detail(table.id)">{{table.number}}</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+  import store from '@/store/index';
+  import { mapState } from 'vuex';
   export default {
     data() {
       return {
@@ -52,100 +55,79 @@
             text: 'Nomi',
             align: 'start',
             sortable: false,
-            value: 'food_detail.name',
+            value: 'name',
           },
-          { text: "Narxi (1ta) (so'm)", value: "food_detail.price" },
-          { text: "Miqdori", value: "quantity" },
-          { text: "Narxi (so'm)", value: "price" },
+          { text: "Narxi (1ta) (so'm)", value: "cost" },
+          { text: "Miqdori", value: "count" },
+          { text: "Narxi (so'm)", value: "summ" },
         ],
-        food_list: {
-          "id": 1,
-          "number": 1,
-          "is_free": false,
-          "order": {
-            "id": 29,
-            "status": "new",
-            "waiter": "Ulug'bek Mo'minjonov",
-            "total": 30000.0,
-            "detail": [
-              {
-                "food": 3,
-                "food_detail": {
-                    "name": "Qiyma",
-                    "price": 8000.0
-                },
-                "quantity": "3.0",
-                "price": 24000.0
-              },
-              {
-                "food": 2,
-                "food_detail": {
-                    "name": "Ko'k somsa",
-                    "price": 3000.0
-                },
-                "quantity": "2.0",
-                "price": 6000.0
-              }
-            ]
-          }
-        },
-        tables: [
-          {
-            "id": 1,
-            "number": 1,
-            "is_free": false
-          },
-          {
-            "id": 2,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 3,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 4,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 5,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 6,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 7,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 8,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 9,
-            "number": 2,
-            "is_free": true
-          },
-          {
-            "id": 10,
-            "number": 2,
-            "is_free": true
-          },
-        ]
+        activeTable: null
       }
     },
+    created() {
+      store.dispatch('cashier/getTables')
+    },
     computed: {
-      data() {
-        return this.food_list.order.detail
+      ...mapState('cashier',{
+        tables: 'table',
+        ordered: 'food_detail'
+      }),
+      foods() {
+        let data = []
+        if(this.ordered && this.ordered.order) {
+          this.ordered.order.detail.forEach(element => {
+            data.push({
+              name: element.foodDetail.name,
+              cost: element.foodDetail.price,
+              count: parseInt(element.quantity),
+              summ: element.price
+            })
+          })
+          data.unshift({
+            name: "Klentlar soni",
+            cost: 1000,
+            count: this.ordered.order.clientCount,
+            summ: this.ordered.order.clientCost
+          })
+        }
+        return data
+      },
+      tableId() {
+        if(this.ordered) {
+          return this.ordered.number
+        }
+        return null
+      },
+      getAfitsant() {
+        if(this.ordered && this.ordered.order) {
+          return this.ordered.order.waiter
+        }
+        return null
+      },
+      getTotal() {
+        if(this.ordered && this.ordered.order) {
+          return this.ordered.order.total
+        }
+        return null
+      }
+    },
+    methods: {
+      detail(id) {
+        this.activeTable = id
+        store.dispatch('cashier/getDatail', id)
+      },
+      pay(type) {
+        let data = {
+          "payment": {
+            "total_amount": this.ordered.order.total,
+            "payment_type": type
+          }
+        }
+        store.dispatch('cashier/payment', data)
+          .then(() => {
+            this.activeTable = null
+            location.reload()
+          })
       }
     }
     
@@ -153,6 +135,9 @@
 </script>
 
 <style scoped>
+.yellow {
+  background-color: #FAFF00;
+}
 .my-container {
   padding-left: 20px;
   padding-right: 20px;
@@ -185,6 +170,10 @@
   font-size: 16px;
   line-height: 25px;
 }
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
 .button {
   font-size: 15px !important;
   text-transform: initial;
@@ -206,11 +195,12 @@
   flex-wrap: wrap;
   margin: 0;
   align-items: center;
+  justify-content: center;
   list-style-type: none;
-  gap: 2%;
+  gap: 3%;
 }
 .table-item {
-  width: 32%;
+  width: 28%;
   font-weight: 800;
   font-size: 60px;
   line-height: 120px;
@@ -219,5 +209,12 @@
   background: rgba(20, 255, 0, 0.5);
   border-radius: 20px;
   text-align: center;
+  cursor: pointer;
+}
+.active{
+  background-color: red;
+}
+.d-none {
+  display: none !important;
 }
 </style>

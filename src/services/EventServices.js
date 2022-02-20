@@ -72,5 +72,48 @@ export default {
   },
   setOrder(data) {
     return instance.post('/api/cafe/order/', data)
-  }
+  },
+  deleteOrder(id) {
+    return instance.delete(`/api/cafe/order/delete/${id}/`)
+  },
+  orderUpdate(id, data) {
+    return instance.put(`/api/cafe/order/${id}/`, data)
+  },
+  getIncome() {
+    return instance.get('/api/backoffice/product/income/')
+  },
+  getFilterIncome(lte, gte) {
+    return instance.get('/api/backoffice/product/income/', {
+      params: {
+        "dateBefore": gte,
+        "dateAfter": lte
+      }
+    })
+  },
+  getOutcome() {
+    return instance.get('/api/backoffice/product/outcome/')
+  },
+  getFilterOutcome(lte, gte) {
+    return instance.get('/api/backoffice/product/outcome/', {
+      params: {
+        "dateBefore": gte,
+        "dateAfter": lte
+      }
+    })
+  },
+  getProduct(id) {
+    return instance.get(`/api/backoffice/product/${id}/`)
+  },
+  getSales() {
+    return instance.get('/api/backoffice/food/')
+  },
+  getFilterSaleProduct(lte, gte) {
+    return instance.get('/api/backoffice/food/', {
+      params: {
+        "dateBefore": gte,
+        "dateAfter": lte
+      }
+    })
+  },
+
 };

@@ -59,7 +59,7 @@
           </v-btn>
         </div>
 
-        <div class="d-flex justify-center mb-5">
+        <div class="mb-5 buttons" :class="{'beetween': !isActive}">
           <v-btn
             class="order-btn"
             dark
@@ -68,26 +68,9 @@
           >
             Zakaz berish
           </v-btn>
-        </div>
-
-        <div class="d-flex justify-space-between mb-5">
           <v-btn
             class="order-btn"
-            dark
-            color="orange darken-2"
-            outlined
-            @click="back()"
-          >
-            <v-icon
-              dark
-              left
-            >
-              mdi-arrow-left
-            </v-icon>
-            Orqaga
-          </v-btn>
-          <v-btn
-            class="order-btn"
+            :class="{'d-none': isActive}"
             dark
             color="red"
             outlined
@@ -100,6 +83,24 @@
             >
               mdi-cancel
             </v-icon>
+          </v-btn>
+        </div>
+
+        <div class="d-flex mb-5">
+          <v-btn
+            class="back-table"
+            dark
+            color="orange darken-2"
+            outlined
+            @click="back()"
+          >
+            <v-icon
+              dark
+              left
+            >
+              mdi-arrow-left
+            </v-icon>
+            Orqaga
           </v-btn>
         </div>
       </div>
@@ -118,7 +119,7 @@ import store from '@/store/index';
     data() {
       return {
         tabItem: "Barchasi",
-        selected: null
+        selected: null,
       }
     },
     created() {
@@ -147,6 +148,12 @@ import store from '@/store/index';
         }
         return null;
       },
+      isActive() {
+        if(this.ordered.order && this.ordered.order.id){
+          return false;
+        } 
+        return true;
+      }
     },
     methods: {
       selectedItem(item) {
@@ -202,7 +209,11 @@ import store from '@/store/index';
         this.$router.push("/home");
       },
       cancel() {
-        
+        store.dispatch('stollar/deleteOrders')
+          .then(() => {
+            alert("Zakaz bekor qilindi!")
+            location.reload()
+          })
       }
     }
   }
@@ -210,6 +221,7 @@ import store from '@/store/index';
 
 <style scoped>
 .main-menu {
+  position: relative;
   margin-top: 20px;
 }
 .tab-wrapper {
@@ -260,6 +272,11 @@ import store from '@/store/index';
   color: #000000;
   background-color: #fff;
 }
+.back-table {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .changing-buttons {
   width: 80%;
   margin-left: auto;
@@ -268,5 +285,15 @@ import store from '@/store/index';
 .active-el {
   background-color: #218838;
   color: #fff;
+}
+.beetween {
+  justify-content: space-between !important;
+}
+.d-none {
+  display: none !important;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
 }
 </style>
