@@ -173,6 +173,7 @@
           :no-data-text="noDate"
           hide-default-footer
           :search="search"
+          @click:row="handleClick"
       >
       </v-data-table> 
     </div>
@@ -207,9 +208,9 @@ import { DateTime } from "luxon";
         noDate: "Hali mahsulot sotilmadi"
       }
     },
-    async created() {
-      await store.dispatch('sales/salesProduct')
-      await store.commit('director/ActiveSideBar')
+    mounted() {
+      store.commit('director/ActiveSideBar')
+      store.dispatch('sales/salesProduct')
     },
     computed: {
       ...mapState('sales', {
@@ -224,7 +225,8 @@ import { DateTime } from "luxon";
               id: element.id,
               name: element.name,
               totalAmount: Number(element.total.totalAmount),
-              totalPrice: Number(element.total.totalPrice)
+              totalPrice: Number(element.total.totalPrice),
+              detail: element.total.detail
             })
             summ += Number(element.total.totalPrice)
           })
@@ -279,13 +281,8 @@ import { DateTime } from "luxon";
         this.noDate = "Bu oraliqda mahsulotlar sotilmagan"
       },
       handleClick(value) {
-        console.log(value);
-        if(this.tabProduct == 'kirim'){
-          this.$router.push({name: "productDetailIncome", params: {id: value.id}})
-        }
-        else {
-          this.$router.push({name: "productDetailOutcome", params: {id: value.id}})
-        }
+        this.$router.push({name: "SalesDetail", params: {id: value.id}})
+
       }
     }
   }

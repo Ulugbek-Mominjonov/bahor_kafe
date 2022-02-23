@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex my-container">
+  <div class="d-flex main">
     <div class="ordered-foods">
         <div class="d-flex flex-column foods-list">
           <div class="component-info text-center mt-5 mb-3 align-center">
@@ -38,7 +38,7 @@
     <div class="tables">
       <h1 class="tables-title">Stollar</h1>
       <ul class="table-list">
-        <li class="table-item" v-for="table in tables" :key="table.id"  :class="{active: !table.isFree, yellow: activeTable==table.id ? true: false}" @click="detail(table.id)">{{table.number}}</li>
+        <li class="table-item" v-for="table in tables" :key="table.id"  :class="{active: !table.isFree, yellow: activeTable==table.id ? true: false}" @click="detail(table)">{{table.number}}</li>
       </ul>
     </div>
   </div>
@@ -56,15 +56,18 @@
             align: 'start',
             sortable: false,
             value: 'name',
+            class: "header-style",
+            divider: true
           },
-          { text: "Narxi (1ta) (so'm)", value: "cost" },
-          { text: "Miqdori", value: "count" },
-          { text: "Narxi (so'm)", value: "summ" },
+          { text: "Narxi (1ta) (so'm)", align: 'center', value: "cost", class: "header-style", divider: true },
+          { text: "Miqdori", align: 'center', value: "count", class: "header-style", divider: true },
+          { text: "Narxi (so'm)", align: 'center', value: "summ", class: "header-style", divider: true },
         ],
         activeTable: null
       }
     },
     created() {
+      store.commit('cashier/ACTIVE_SIDEBAR')
       store.dispatch('cashier/getTables')
     },
     computed: {
@@ -112,9 +115,12 @@
       }
     },
     methods: {
-      detail(id) {
-        this.activeTable = id
-        store.dispatch('cashier/getDatail', id)
+      detail(payload) {
+        this.activeTable = payload.id
+        if(payload.number == 0 && payload.isFree) {
+          this.$router.push({name: "Menu", params: {id: payload.id}})
+        }
+        store.dispatch('cashier/getDatail', payload.id)
       },
       pay(type) {
         let data = {
@@ -129,6 +135,9 @@
             location.reload()
           })
       }
+    },
+    destroyed() {
+      store.commit('cashier/DISABLED_SIDEBAR')
     }
     
   }
@@ -142,8 +151,12 @@
   padding-left: 20px;
   padding-right: 20px;
 }
+.main {
+  flex-grow: 1;
+}
 .ordered-foods {
   width: 50%;
+  padding-left: 15px;
 }
 .foods-list {
   height: calc(100vh - 76px);
@@ -175,7 +188,7 @@
   justify-content: space-between;
 }
 .button {
-  font-size: 15px !important;
+  font-size: 14px !important;
   text-transform: initial;
 }
 .tables {

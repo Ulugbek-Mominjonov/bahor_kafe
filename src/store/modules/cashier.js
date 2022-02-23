@@ -4,7 +4,8 @@ export const namespaced = true
     
 export const state = {
   table: null,
-  food_detail: null
+  food_detail: null,
+  sideBar: false
 }
 export const mutations = {
   SET_TABLES(state, payload) {
@@ -12,6 +13,12 @@ export const mutations = {
   },
   SET_DETAIL(state, payload) {
     state.food_detail = payload
+  },
+  ACTIVE_SIDEBAR (state) {
+    state.sideBar = true
+  },
+  DISABLED_SIDEBAR (state) {
+    state.sideBar = false
   }
 }
 export const actions = {
@@ -24,7 +31,7 @@ export const actions = {
   },
   async getDatail({commit}, id) {
     let res = await EventService.getTableDetail(id)
-                .catch(err => alert(err))
+      .catch(err => alert(err))
     commit('SET_DETAIL', res.data)
     console.log(res.data);
   },

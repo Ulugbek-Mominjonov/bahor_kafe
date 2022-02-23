@@ -9,8 +9,10 @@ import Director from '@/views/Director.vue';
 import ProductDetailIncome from '@/views/ProductDetailIncome.vue';
 import ProductDetailOutcome from '@/views/ProductDetailOutcome.vue';
 import Sales from '@/views/Sales.vue';
+import SalesDetail from '@/views/SalesDetail.vue';
 Vue.use(VueRouter);
-
+import Afitsants from '@/views/Afitsants.vue';
+import AfitsantDetail from '@/views/AfitsantDetail.vue';
 const routes = [
   {
     path: "/",
@@ -61,6 +63,23 @@ const routes = [
     path: "/Sales",
     name: "Sales",
     component: Sales,
+  },
+  {
+    path: "/SalesDetail/:id",
+    name: "SalesDetail",
+    component: SalesDetail,
+    props: true
+  },
+  {
+    path: "/afitsantlar",
+    name: "Afitsants",
+    component: Afitsants,
+  },
+  {
+    path: "/AfitsantDetail/:id",
+    name: "AfitsantDetail",
+    component: AfitsantDetail,
+    props: true
   },
 ];
 

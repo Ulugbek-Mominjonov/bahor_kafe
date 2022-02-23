@@ -33,7 +33,7 @@
           <v-btn
             text
             color="primary"
-            @click="modal = false"
+            @click="modaltwo = false"
           >
             Cancel
           </v-btn>
@@ -71,7 +71,7 @@
           <v-btn
             text
             color="primary"
-            @click="modal = false"
+            @click="modalThree = false"
           >
             Cancel
           </v-btn>
@@ -85,14 +85,6 @@
         </v-date-picker>
         </v-dialog>
       </div>
-    </div>
-    <div class="button-tabs">
-      <button class="tab-button" @click="changeMenu('kirim')" :class="{actives: tabProduct=='kirim' ? true : false}">
-        Mahsulot kirimi
-      </button>
-      <button class="tab-button" @click="changeMenu('chiqim')" :class="{actives: tabProduct=='chiqim' ? true : false}">
-        Mahsulot chiqimi
-      </button>
     </div>
     <div class="my-5">
       <v-btn-toggle
@@ -172,16 +164,14 @@
       </v-dialog>
     </div>
 
-    <div class="data-table">
+    <div class="data-table sales-data-table">
       <v-data-table
-          :headers="header"
-          :items="product"
-          :items-per-page="10"
+          :headers="headers"
+          :items="getSaleFoods"
           class="elevation-1"
           light
           :no-data-text="noDate"
           hide-default-footer
-          @click:row="handleClick"
           :search="search"
       >
       </v-data-table> 
@@ -191,7 +181,7 @@
 
 <script>
 import store from '@/store/index';
-import { mapState } from 'vuex';
+import { mapState, mapGetters  } from 'vuex';
 import { DateTime } from "luxon";
   export default {
     data() {
@@ -202,95 +192,52 @@ import { DateTime } from "luxon";
         modal: false,
         modaltwo: false,
         modalThree: false,
-        tabProduct: 'kirim',
         toggle_exclusive: undefined,
-        headersIncome: [
+        headers: [
           {
             text: 'Mahsulot',
             align: 'start',
-            value: 'name',
+            value: 'amount',
             class: "header-style",
             divider: true
           },
-          { text: "O'lchov birligi", value: "type", align: 'center', class: "header-style", divider: true},
-          { text: "Umumiy miqdori", value: "totalValue", align: 'center', class: "header-style", divider: true},
-          { text: "Umumiy narx(so'm)", value: "totalPrice", align: 'center', class: "header-style", divider: true},
+          { text: "Umumiy narx", value: "price", align: 'center', class: "header-style", divider: true},
+          { text: "Sotilgan sana", value: "date", align: 'center', class: "header-style", divider: true},
         ],
-        headersOutcome: [
-          {
-            text: 'Mahsulot',
-            align: 'start',
-            value: 'name',
-            class: "header-style",
-            divider: true
-          },
-          { text: "O'lchov birligi", value: "type", align: 'center', class: "header-style", divider: true},
-          { text: "Umumiy miqdori", value: "totalValue", align: 'center', class: "header-style", divider: true},
-        ],
-        noDate: "Mahsulot hali kelmadi"
+        noDate: "Hali mahsulot sotilmadi"
       }
     },
     created() {
-      store.dispatch('director/income')
-      store.dispatch('director/outcome')
       store.commit('director/ActiveSideBar')
     },
+    mounted() {
+      store.dispatch('sales/salesProduct')
+    },
     computed: {
-      ...mapState('director', {
-        income: 'income',
-        outcome: 'outcome'
+      ...mapState('sales', {
+        salesFoods: 'salesFood',
       }),
-      product() {
-        if(this.tabProduct == "kirim") {
-          return this.getIncome
-        }
-        else {
-          return this.getOutcome
-        }
-      },
-      header() {
-        if(this.tabProduct == "kirim") {
-          return this.headersIncome
-        }
-        else {
-          return this.headersOutcome
-        }
-      },
-      getIncome() {
+      ...mapGetters('sales',{
+        SaleData: 'getSaleData'
+      }),
+      getSaleFoods() {
+        let id = parseInt(this.$route.params.id)
         let data = []
-        if(this.income) {
-          this.income.forEach(element => {
-            data.push({
-              id: element.product,
-              name: element.name,
-              type: element.type,
-              totalValue: element.totalValue,
-              totalPrice: element.totalPrice
-            })
+        if(this.SaleData(id)){
+          data = this.SaleData(id).total.detail
+          let summ = 0
+          data.forEach(item => {
+            summ += item.price
+          })
+          data.push({
+            amount: "Umumiy savdo summa",
+            price: summ
           })
         }
         return data
-      },
-      getOutcome() {
-        let data = []
-        if(this.outcome) {
-          this.outcome.forEach(element => {
-            data.push({
-              id: element.product,
-              name: element.name,
-              type: element.type,
-              totalValue: element.totalValue,
-            })
-          })
-        }
-        return data
-      },
-    
+      },  
     },
     methods: {
-      async changeMenu(payload){
-        this.tabProduct = payload
-      },
       foo() {
         this.modal = true
       },
@@ -329,27 +276,9 @@ import { DateTime } from "luxon";
           current,
           last 
         }
-        if(this.tabProduct == 'kirim') {
-          await store.dispatch('director/filterIncme', data)
-          this.noDate = "Bu oraliqda mahsulot kelmagan"
-        }
-        else {
-          await store.dispatch('director/filterOutcome', data)
-          this.noDate = "Bu oraliqda mahsulot ishlatilmagan"
-        }
+        await store.dispatch('sales/filterSaleFoods', data)
+        this.noDate = "Bu oraliqda mahsulotlar sotilmagan"
       },
-      handleClick(value) {
-        console.log(value);
-        if(this.tabProduct == 'kirim'){
-          this.$router.push({name: "productDetailIncome", params: {id: value.id}})
-        }
-        else {
-          this.$router.push({name: "productDetailOutcome", params: {id: value.id}})
-        }
-      }
-    },
-    destroyed() {
-      store.commit('director/DisabledSideBar')
     }
   }
 </script>

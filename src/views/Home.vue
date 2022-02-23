@@ -4,7 +4,7 @@
       <p class="stoll">Stollar</p>
       <ul class="stoll-list">
         <li v-for="(item, index) in stollar" :key="index">
-          <Stollar :nomer="item" :afitsant="c"/>
+          <Stollar :nomer="item" :afitsant="$route.params.id"/>
         </li>
       </ul>
     </div>

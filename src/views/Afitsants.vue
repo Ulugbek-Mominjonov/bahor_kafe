@@ -33,7 +33,7 @@
           <v-btn
             text
             color="primary"
-            @click="modal = false"
+            @click="modaltwo = false"
           >
             Cancel
           </v-btn>
@@ -71,7 +71,7 @@
           <v-btn
             text
             color="primary"
-            @click="modal = false"
+            @click="modalThree = false"
           >
             Cancel
           </v-btn>
@@ -85,14 +85,6 @@
         </v-date-picker>
         </v-dialog>
       </div>
-    </div>
-    <div class="button-tabs">
-      <button class="tab-button" @click="changeMenu('kirim')" :class="{actives: tabProduct=='kirim' ? true : false}">
-        Mahsulot kirimi
-      </button>
-      <button class="tab-button" @click="changeMenu('chiqim')" :class="{actives: tabProduct=='chiqim' ? true : false}">
-        Mahsulot chiqimi
-      </button>
     </div>
     <div class="my-5">
       <v-btn-toggle
@@ -172,17 +164,16 @@
       </v-dialog>
     </div>
 
-    <div class="data-table">
+    <div class="data-table sales-data-table">
       <v-data-table
-          :headers="header"
-          :items="product"
-          :items-per-page="10"
+          :headers="headers"
+          :items="getAfitsants"
           class="elevation-1"
           light
           :no-data-text="noDate"
           hide-default-footer
-          @click:row="handleClick"
           :search="search"
+          @click:row="handleClick"
       >
       </v-data-table> 
     </div>
@@ -202,95 +193,53 @@ import { DateTime } from "luxon";
         modal: false,
         modaltwo: false,
         modalThree: false,
-        tabProduct: 'kirim',
         toggle_exclusive: undefined,
-        headersIncome: [
+        headers: [
           {
-            text: 'Mahsulot',
+            text: 'Afitsant F.I.SH',
             align: 'start',
             value: 'name',
             class: "header-style",
             divider: true
           },
-          { text: "O'lchov birligi", value: "type", align: 'center', class: "header-style", divider: true},
-          { text: "Umumiy miqdori", value: "totalValue", align: 'center', class: "header-style", divider: true},
-          { text: "Umumiy narx(so'm)", value: "totalPrice", align: 'center', class: "header-style", divider: true},
+          { text: "Zakazlar soni", value: "orderCount", align: 'center', class: "header-style", divider: true},
+          { text: "Klientlar soni", value: "clientCount", align: 'center', class: "header-style", divider: true},
+          { text: "Oylik", value: "amount", align: 'center', class: "header-style", divider: true},
         ],
-        headersOutcome: [
-          {
-            text: 'Mahsulot',
-            align: 'start',
-            value: 'name',
-            class: "header-style",
-            divider: true
-          },
-          { text: "O'lchov birligi", value: "type", align: 'center', class: "header-style", divider: true},
-          { text: "Umumiy miqdori", value: "totalValue", align: 'center', class: "header-style", divider: true},
-        ],
-        noDate: "Mahsulot hali kelmadi"
+        noDate: "Afitsantlar haqida ma'lumot"
       }
     },
     created() {
-      store.dispatch('director/income')
-      store.dispatch('director/outcome')
       store.commit('director/ActiveSideBar')
+      store.dispatch('afitsant/afitsants')
     },
     computed: {
-      ...mapState('director', {
-        income: 'income',
-        outcome: 'outcome'
+      ...mapState('afitsant', {
+        allAfitsant: 'allAfitsant',
       }),
-      product() {
-        if(this.tabProduct == "kirim") {
-          return this.getIncome
-        }
-        else {
-          return this.getOutcome
-        }
-      },
-      header() {
-        if(this.tabProduct == "kirim") {
-          return this.headersIncome
-        }
-        else {
-          return this.headersOutcome
-        }
-      },
-      getIncome() {
+      getAfitsants() {
         let data = []
-        if(this.income) {
-          this.income.forEach(element => {
+        let summ = 0
+        if(this.allAfitsant) {
+          this.allAfitsant.forEach(element => {
             data.push({
-              id: element.product,
-              name: element.name,
-              type: element.type,
-              totalValue: element.totalValue,
-              totalPrice: element.totalPrice
+              id: element.id,
+              name: element.firstName + " " + element.lastName,
+              orderCount: Number(element.orderCount),
+              clientCount: Number(element.clientCount),
+              amount: element.amount
             })
+            summ += Number(element.amount)
           })
         }
+        data.push({
+          name: "Barcha afitsantlar Oylik summasi",
+          amount: summ
+        })
         return data
-      },
-      getOutcome() {
-        let data = []
-        if(this.outcome) {
-          this.outcome.forEach(element => {
-            data.push({
-              id: element.product,
-              name: element.name,
-              type: element.type,
-              totalValue: element.totalValue,
-            })
-          })
-        }
-        return data
-      },
-    
+      },  
     },
     methods: {
-      async changeMenu(payload){
-        this.tabProduct = payload
-      },
       foo() {
         this.modal = true
       },
@@ -329,27 +278,13 @@ import { DateTime } from "luxon";
           current,
           last 
         }
-        if(this.tabProduct == 'kirim') {
-          await store.dispatch('director/filterIncme', data)
-          this.noDate = "Bu oraliqda mahsulot kelmagan"
-        }
-        else {
-          await store.dispatch('director/filterOutcome', data)
-          this.noDate = "Bu oraliqda mahsulot ishlatilmagan"
-        }
+        await store.dispatch('afitsant/filterAfitsants', data)
+        this.noDate = "Bu oraliqda mahsulotlar sotilmagan"
       },
       handleClick(value) {
-        console.log(value);
-        if(this.tabProduct == 'kirim'){
-          this.$router.push({name: "productDetailIncome", params: {id: value.id}})
-        }
-        else {
-          this.$router.push({name: "productDetailOutcome", params: {id: value.id}})
-        }
+        this.$router.push({name: "AfitsantDetail", params: {id: value.id}})
+
       }
-    },
-    destroyed() {
-      store.commit('director/DisabledSideBar')
     }
   }
 </script>

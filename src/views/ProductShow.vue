@@ -134,6 +134,9 @@ import store from '@/store/index';
         ordered: "ordered",
       }),
       tableId() {
+        if (this.$route.params.id == 8) {
+          return 0
+        }
         return this.$route.params.id
       },
       getClientCount() {
@@ -200,10 +203,15 @@ import store from '@/store/index';
         });
         await store.dispatch('stollar/setOrder', data)
         let key = parseInt(this.$route.params.id)
-        await store.dispatch('stollar/detail', key)
-          .then(() => {
-            this.$router.push("/orderFood");
-          })
+        if(key == 8) {
+          this.$router.push('/accountant')
+        }
+        else {
+          await store.dispatch('stollar/detail', key)
+            .then(() => {
+              this.$router.push("/orderFood");
+            })
+        }
       },
       back() {
         this.$router.push("/home");

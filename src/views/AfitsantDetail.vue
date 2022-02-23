@@ -11,15 +11,15 @@
       type="success"
       color="#006D7C"
       class="alert"
-    >Ishlatilgan {{getName}} mahsuloti</v-alert>
+    >Afitsant - {{getName}}</v-alert>
 
-    <div class="data-table deatil-outcome-data-table">
+    <div class="data-table deatil-data-table">
       <v-data-table
-          :headers="headersOutcome"
-          :items="getProducts"
+          :headers="headers"
+          :items="getAfitsant"
           class="elevation-1"
           light
-          no-data-text="Bu mahsulotdan hali ishlatilmadi"
+          no-data-text="Afitsant ma'lumotlari hali kelmadi"
           hide-default-footer
           :search="search"
       >
@@ -35,41 +35,54 @@ import { mapState } from 'vuex';
     data() {
       return {
         search: '',
-        headersOutcome: [
+        headers: [
           {
-            text: 'Ishlatilgan Mahsulotlar miqdori(litr)',
+            text: 'Klientlar soni',
             align: 'start',
-            value: 'value',
+            value: 'clientCount',
             class: "header-style",
             divider: true
           },
-          { text: "Ishlatilgan sanasi", value: "date", align: 'center', class: "header-style", divider: true},
+          { text: "Xizmat ko'rsatilgan sana", value: "date", align: 'center', class: "header-style", divider: true},
+          { text: "Kunlik Oylik", value: "amount", align: 'center', class: "header-style", divider: true},
+          { text: "To'langan oylik", value: "paidAmount", align: 'center', class: "header-style", divider: true},
         ],
       }
     },
     async created() {
       let id = parseInt(this.$route.params.id)
-      await store.dispatch('director/product', id)
-    },
-    mounted() {
-      store.commit('director/ActiveSideBar')
+      await store.commit('director/ActiveSideBar')
+      await store.dispatch('afitsant/afitsant', id)
     },
     computed: {
-      ...mapState('director', {
-        productDetails: 'productDetail'
+      ...mapState('afitsant', {
+        afitsant: 'afitsant'
       }),
       getName() {
-        if(this.productDetails) {
-          return this.productDetails.name
+        if(this.afitsant) {
+          return this.afitsant.firstName + " " + this.afitsant.lastName
         }
         return ''
       },
-      getProducts() {
-        if(this.productDetails) {
-          return this.productDetails.productOutcome
+      getAfitsant() {
+        if(this.afitsant) {
+          let salary = 0;
+          let paided = 0;
+          let data = this.afitsant.detail
+          data.forEach(item => {
+            salary += Number(item.amount)
+            paided += Number(item.paidAmount)
+          })
+          data.push({
+            clientCount: "Umumiy oylik va To'lov",
+            amount: salary,
+            paidAmount: paided
+
+          })
+          return data
         }
         return []
-      }
+      }, 
     }
   }
 </script>

@@ -115,5 +115,19 @@ export default {
       }
     })
   },
+  getAllAfitsants() {
+    return instance.get('/api/backoffice/waiter/')
+  },
+  getFilterAfitsants(lte, gte) {
+    return instance.get('/api/backoffice/waiter/', {
+      params: {
+        "dateBefore": gte,
+        "dateAfter": lte
+      }
+    })
+  },
+  getAfitsant(id) {
+    return instance.get(`/api/backoffice/waiter/${id}/`)
+  }
 
 };

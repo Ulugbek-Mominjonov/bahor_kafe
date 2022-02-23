@@ -48,10 +48,12 @@ import { mapState } from 'vuex';
         ],
       }
     },
-    async created() {
+    created() {
       let id = parseInt(this.$route.params.id)
-      await store.commit('director/ActiveSideBar')
-      await store.dispatch('director/product', id)
+      store.dispatch('director/product', id)
+    },
+    mounted() {
+      store.commit('director/ActiveSideBar')
     },
     computed: {
       ...mapState('director', {
