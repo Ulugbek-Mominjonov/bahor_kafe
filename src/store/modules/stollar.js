@@ -83,13 +83,13 @@ export const actions = {
     });
   },
   async detail({ commit }, id) {
-    await EventService.getTableDetail(id).then((res) => {
+    return await EventService.getTableDetail(id).then((res) => {
       let value = {
         data: res.data,
         id: id,
       };
       commit("SET_DETAIL", value);
-    });
+    })
   },
   food({commit, getters}, value) {
     let index = getters.getFoodById(value.id)

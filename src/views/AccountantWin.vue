@@ -67,8 +67,11 @@
       }
     },
     created() {
-      store.commit('cashier/ACTIVE_SIDEBAR')
       store.dispatch('cashier/getTables')
+      store.commit('cashier/ACTIVE_SIDEBAR')
+    },
+    mounted() {
+      store.commit('cashier/ACTIVE_SIDEBAR')
     },
     computed: {
       ...mapState('cashier',{

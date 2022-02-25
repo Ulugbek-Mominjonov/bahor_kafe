@@ -128,6 +128,12 @@ export default {
   },
   getAfitsant(id) {
     return instance.get(`/api/backoffice/waiter/${id}/`)
+  },
+  getAfitsantForCashier() {
+    return instance.get('/api/cafe/waiters/')
+  },
+  setPayment(data) {
+    return instance.post('/api/cafe/waiter/', data)
   }
 
 };

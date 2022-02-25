@@ -7,6 +7,7 @@ export const state = {
   authData: {
     token: "",
     refreshToken: "",
+    role: ""
   },
   loginStatus: ""
 
@@ -15,10 +16,13 @@ export const mutations = {
   saveTokenData(state, data) {
     localStorage.setItem("access_token", data.access);
     localStorage.setItem("refresh_token", data.refresh);
+    localStorage.setItem("role", data.role);
+    localStorage.setItem("fullName", data.full_name);
     const newTokenData = {
       token: data.access,
       refreshToken: data.refresh,
-      role: data.role
+      role: data.role,
+      fullName: data.full_name
     };
 
     state.authData = newTokenData;
@@ -29,8 +33,12 @@ export const mutations = {
   clear_data(state) {
     state.authData.token = ""
     state.authData.refresh = ""
+    state.authData.role = ""
+    state.authData.fullName = ""
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
+    localStorage.removeItem("role")
+    localStorage.removeItem('fullName')
   }
 
 }

@@ -51,7 +51,7 @@ export default {
         .then(() => {
           if(this.getterAuthData.role == "waiter"){
             store.commit('director/DisabledSideBar')
-            this.$router.push({ name: "Home", params: {id: this.login} });
+            this.$router.push({ name: "Home", params: {id: this.getterAuthData.fullName} });
           }
           else if(this.getterAuthData.role == "cashier") {
             store.commit('director/DisabledSideBar')

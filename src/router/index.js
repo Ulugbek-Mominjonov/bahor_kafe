@@ -13,6 +13,8 @@ import SalesDetail from '@/views/SalesDetail.vue';
 Vue.use(VueRouter);
 import Afitsants from '@/views/Afitsants.vue';
 import AfitsantDetail from '@/views/AfitsantDetail.vue';
+import AfitsantCashierWin from '@/views/AfitsantCashierWin.vue';
+import ErrorTemplate from '@/views/ErrorTemplate.vue';
 const routes = [
   {
     path: "/",
@@ -23,63 +25,109 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    props: true
+    props: true,
+    meta: {
+      role: 'waiter',
+    },
   },
   {
     path: "/Menu/:id",
     name: "Menu",
     component: Menu,
-    props: true
+    props: true,
+    meta: {
+      role: 'waiter',
+    },
   },
   {
     path: "/orderFood",
     name: "OrderedFood",
     component: OrderedFood,
+    meta: {
+      role: 'waiter',
+    },
   },
   {
     path: "/accountant",
     name: "AccountantWindow",
     component: AccountantWindow,
+    meta: {
+      role: 'cashier',
+    },
   },
   {
     path: "/director",
     name: "director",
     component: Director,
-    props: true
+    props: true,
+    meta: {
+      role: 'director',
+    },
   },
   {
     path: "/productDetailIncome/:id",
     name: "productDetailIncome",
     component: ProductDetailIncome,
-    props: true
+    props: true,
+    meta: {
+      role: 'director',
+    },
   },
   {
     path: "/productDetailOutcome/:id",
     name: "productDetailOutcome",
     component: ProductDetailOutcome,
-    props: true
+    props: true,
+    meta: {
+      role: 'director',
+    },
   },
   {
     path: "/Sales",
     name: "Sales",
     component: Sales,
+    meta: {
+      role: 'director',
+    },
   },
   {
     path: "/SalesDetail/:id",
     name: "SalesDetail",
     component: SalesDetail,
-    props: true
+    props: true,
+    meta: {
+      role: 'director',
+    },
   },
   {
     path: "/afitsantlar",
     name: "Afitsants",
     component: Afitsants,
+    meta: {
+      role: 'director',
+    },
   },
   {
     path: "/AfitsantDetail/:id",
     name: "AfitsantDetail",
     component: AfitsantDetail,
-    props: true
+    props: true,
+    meta: {
+      role: 'director',
+    },
+  },
+  {
+    path: "/afitsants",
+    name: "cashierAfitsant",
+    component: AfitsantCashierWin,
+    meta: {
+      role: 'cashier',
+    },
+  },
+  {
+    path: '/403',
+    name: 'error.403',
+    component: ErrorTemplate,
   },
 ];
 
@@ -90,7 +138,27 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const role = to.meta && to.meta.role;
   if (to.name !== 'Login' && !localStorage.getItem('access_token')) next({ name: 'Login' })
-  else next()
+  else if (to.fullPath == "/" && localStorage.getItem('access_token') && localStorage.getItem('role') == 'waiter') {
+    next({name: "Home"})
+  }
+  else if (to.fullPath == "/" && localStorage.getItem('access_token') && localStorage.getItem('role') == 'cashier') {
+    next({name: "AccountantWindow"})
+  }
+  else if (to.fullPath == "/" && localStorage.getItem('access_token') && localStorage.getItem('role') == 'director') {
+    next({name: "director"})
+  }
+  else if(role && role !== localStorage.getItem('role')) {
+    if(role === 'waiter'){
+      next()
+    }
+    else {
+      next({name: "error.403"})
+    }
+  }
+  else {
+    next()
+  }
 })
 export default router;

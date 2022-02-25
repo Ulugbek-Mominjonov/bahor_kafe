@@ -39,7 +39,7 @@
         <router-link class="link taomlar" :class="{active: tabItem=='sotuv'}" to="/accountant">
           Zakazlar <br> bo'limi
         </router-link>
-        <router-link class="link afitantlar" :class="{active: tabItem=='afitsant'}" to="#">
+        <router-link class="link afitantlar" :class="{active: tabItem=='afitsant'}" to="/afitsants">
           Afitsantlar <br> bo'limi
         </router-link>
       </div>
@@ -122,9 +122,14 @@ html {
 }
 .site-main .v-main__wrap {
   display: flex !important;
+  margin-left: 82px;
 }
   /* SIDE BAR  */
 .side-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 82px;
   display: flex;
   flex-direction: column;
   align-items: center;

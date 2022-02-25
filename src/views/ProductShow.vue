@@ -1,109 +1,154 @@
 <template>
-  <div class="my-container">
-    <v-card class="tab-wrapper">
+  <div class="my-container" >
+    <template v-if="!notEnter">
+      <v-card class="tab-wrapper">
       <v-tabs
         center-active
       >
         <v-tab class="tab-item" v-for="(tab, index) in allFoods" :key="index"  @click="selectedItem(tab.name)">{{tab.name }}</v-tab>
         <v-tab class="tab-item" @click="selectedItem('Barchasi')">Barchasi</v-tab>
       </v-tabs>
-    </v-card>
-    <div class="main-menu d-flex">
-      <div class="products">
-          <Product v-for="(item, index) in allFoods" :key="index" :product="item" :stoll="tableId" v-show="tabItem == item.name"/>
-          <template v-if="tabItem == 'Barchasi'">
-            <Product v-for="(item, index) in allFoods" :key="index.name" :product="item" :stoll="tableId"/>
-          </template>
-        <br>
-      </div>
-      <div class="ordered-list">
-        <h2 class="product-name">Zakalar ro'yhati <span>{{tableId }} - stoll</span></h2>
-        <ul class="selected-list">
-          <li class="selected-item">
-            <span class="left-col">Nomi</span>
-            <span class="rigth-col">Soni</span>
-          </li>
-          <li class="selected-item" @click="selected_item(-1)" :class="{'active-el': selected==-1 ? true : false}">
-            <span class="left-col">Klent soni</span>
-            <span class="rigth-col">{{getClientCount}}</span>
-          </li>
-          <li class="selected-item" v-for="(item, index) in getDetail" :key="index" @click="selected_item(item.food)" :class="{'active-el': selected==item.food ? true : false}">
-            <span class="left-col">{{item.foodDetail.name}}</span>
-            <span class="rigth-col">{{parseInt(item.quantity)}}</span>
-          </li>
-        </ul>
-
-        <div class="d-flex justify-space-between my-5 changing-buttons">
-          <v-btn
-            class="minus-btn"
-            dark
-            color="error"
-            :disabled="selected==null ? true : false"
-            @click="remove_item()"
-          >
-            <v-icon dark>
-              mdi-minus
-            </v-icon>
-          </v-btn>
-
-          <v-btn
-            class="plus-btn"
-            dark
-            color="indigo"
-            :disabled="selected==null ? true : false"
-            @click="add_item()"
-          >
-            <v-icon dark>
-              mdi-plus
-            </v-icon>
-          </v-btn>
+      </v-card>
+      <div class="main-menu d-flex">
+        <div class="products">
+            <Product v-for="(item, index) in allFoods" :key="index" :product="item" :stoll="tableId" v-show="tabItem == item.name"/>
+            <template v-if="tabItem == 'Barchasi'">
+              <Product v-for="(item, index) in allFoods" :key="index.name" :product="item" :stoll="tableId"/>
+            </template>
+          <br>
         </div>
+        <div class="ordered-list">
+          <h2 class="product-name">Zakalar ro'yhati <span>{{tableId }} - stoll</span></h2>
+          <ul class="selected-list">
+            <li class="selected-item">
+              <span class="left-col">Nomi</span>
+              <span class="rigth-col">Soni</span>
+            </li>
+            <li class="selected-item" @click="selected_item(-1)" :class="{'active-el': selected==-1 ? true : false}">
+              <span class="left-col">Klent soni</span>
+              <span class="rigth-col">{{getClientCount}}</span>
+            </li>
+            <li class="selected-item" v-for="(item, index) in getDetail" :key="index" @click="selected_item(item.food)" :class="{'active-el': selected==item.food ? true : false}">
+              <span class="left-col">{{item.foodDetail.name}}</span>
+              <span class="rigth-col">{{parseInt(item.quantity)}}</span>
+            </li>
+          </ul>
 
-        <div class="mb-5 buttons" :class="{'beetween': !isActive}">
-          <v-btn
-            class="order-btn"
-            dark
-            color="success"
-            @click="order()"
-          >
-            Zakaz berish
-          </v-btn>
-          <v-btn
-            class="order-btn"
-            :class="{'d-none': isActive}"
-            dark
-            color="red"
-            outlined
-            @click="cancel()"
-          >
-            Bekor qilish
-            <v-icon
+          <div class="d-flex justify-space-between my-5 changing-buttons">
+            <v-btn
+              class="minus-btn"
               dark
-              right
+              color="error"
+              :disabled="selected==null ? true : false"
+              @click="remove_item()"
             >
-              mdi-cancel
-            </v-icon>
-          </v-btn>
-        </div>
+              <v-icon dark>
+                mdi-minus
+              </v-icon>
+            </v-btn>
 
-        <div class="d-flex mb-5">
-          <v-btn
-            class="back-table"
-            dark
-            color="orange darken-2"
-            outlined
-            @click="back()"
-          >
-            <v-icon
+            <v-btn
+              class="plus-btn"
               dark
-              left
+              color="indigo"
+              :disabled="selected==null ? true : false"
+              @click="add_item()"
             >
-              mdi-arrow-left
-            </v-icon>
-            Orqaga
-          </v-btn>
+              <v-icon dark>
+                mdi-plus
+              </v-icon>
+            </v-btn>
+          </div>
+
+          <div class="mb-5 buttons" :class="{'beetween': !isActive}">
+            <v-btn
+              class="order-btn"
+              dark
+              color="success"
+              @click="order()"
+            >
+              Zakaz berish
+            </v-btn>
+            <v-btn
+              class="order-btn"
+              :class="{'d-none': isActive}"
+              dark
+              color="red"
+              outlined
+              @click="cancel()"
+            >
+              Bekor qilish
+              <v-icon
+                dark
+                right
+              >
+                mdi-cancel
+              </v-icon>
+            </v-btn>
+          </div>
+
+          <div class="d-flex mb-5">
+            <v-btn
+              class="back-table"
+              dark
+              color="orange darken-2"
+              outlined
+              @click="back()"
+            >
+              <v-icon
+                dark
+                left
+              >
+                mdi-arrow-left
+              </v-icon>
+              Orqaga
+            </v-btn>
+          </div>
         </div>
       </div>
+
+    </template>
+    <template v-else>
+      <v-alert
+      outlined
+      type="warning"
+      prominent
+      border="left"
+      class="alert"
+    >
+      {{errorMessage}}
+    </v-alert>
+    </template>
+    <div class="text-center">
+      <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Zakaz haqida ma'lumot
+          </v-card-title>
+
+          <v-card-text class="mt-5">
+            <v-alert
+              type="success"
+            >{{orderMessage}}</v-alert>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="dialog = false"
+            >
+              Ok
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -120,12 +165,20 @@ import store from '@/store/index';
       return {
         tabItem: "Barchasi",
         selected: null,
+        notEnter: false,
+        errorMessage: "",
+        dialog: false,
+        orderMessage: ""
       }
     },
     created() {
       store.dispatch('stollar/foods')
       let key = parseInt(this.$route.params.id)
       store.dispatch('stollar/detail', key)
+        .catch(error => {
+          this.notEnter = true
+          this.errorMessage = error.response.data.message 
+        })
     },
     computed: {
       ...mapGetters(['getStateById']),
@@ -209,7 +262,8 @@ import store from '@/store/index';
         else {
           await store.dispatch('stollar/detail', key)
             .then(() => {
-              this.$router.push("/orderFood");
+              this.dialog = true
+              this.orderMessage = "Zakaz qabul qilindi" 
             })
         }
       },
@@ -219,7 +273,8 @@ import store from '@/store/index';
       cancel() {
         store.dispatch('stollar/deleteOrders')
           .then(() => {
-            alert("Zakaz bekor qilindi!")
+            this.orderMessage = "Zakaz bekor qilindi!"
+            this.dialog = true
             location.reload()
           })
       }
@@ -231,6 +286,12 @@ import store from '@/store/index';
 .main-menu {
   position: relative;
   margin-top: 20px;
+}
+.alert {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 .tab-wrapper {
   margin-top: 20px;

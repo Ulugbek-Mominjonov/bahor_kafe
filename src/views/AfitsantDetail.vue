@@ -39,7 +39,7 @@ import { mapState } from 'vuex';
           {
             text: 'Klientlar soni',
             align: 'start',
-            value: 'clientCount',
+            value: 'totalClientCount',
             class: "header-style",
             divider: true
           },
@@ -74,7 +74,7 @@ import { mapState } from 'vuex';
             paided += Number(item.paidAmount)
           })
           data.push({
-            clientCount: "Umumiy oylik va To'lov",
+            totalClientCount: "Umumiy oylik va To'lov",
             amount: salary,
             paidAmount: paided
 

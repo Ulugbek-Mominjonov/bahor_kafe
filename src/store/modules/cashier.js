@@ -5,7 +5,8 @@ export const namespaced = true
 export const state = {
   table: null,
   food_detail: null,
-  sideBar: false
+  sideBar: false,
+  afitsants: []
 }
 export const mutations = {
   SET_TABLES(state, payload) {
@@ -19,6 +20,9 @@ export const mutations = {
   },
   DISABLED_SIDEBAR (state) {
     state.sideBar = false
+  },
+  SET_AFITSANT(state, payload) {
+    state.afitsants = payload
   }
 }
 export const actions = {
@@ -43,6 +47,12 @@ export const actions = {
       })
       .catch(() => {
         alert("Bu buyurtma uchun pul to'lanib bo'lingan")
+      })
+  },
+  async afitsants({commit}) {
+    await EventService.getAfitsantForCashier()
+      .then(res => {
+        commit('SET_AFITSANT', res.data)
       })
   }
 
