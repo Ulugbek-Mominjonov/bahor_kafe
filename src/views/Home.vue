@@ -1,12 +1,13 @@
 <template>
     <div class="my-container stollar">
-      <h1 class=afitsant>Afitsant: <span>{{$route.params.id }}</span></h1>
+      <h1 class=afitsant>Afitsant: <span>{{ getAfitsant }}</span></h1>
       <p class="stoll">Stollar</p>
       <ul class="stoll-list">
-        <li v-for="(item, index) in stollar" :key="index">
+        <li v-for="(item, index) in getStollar" :key="index">
           <Stollar :nomer="item" :afitsant="$route.params.id"/>
         </li>
       </ul>
+      <v-btn color="warning" class="logout" @click="logOut">Chiqish</v-btn>
     </div>
 </template>
 
@@ -21,7 +22,8 @@ export default {
   },
   data() {
     return {
-      afitsant: ""
+      afitsant: "",
+      dialog: true
     }
   },
   created() {
@@ -30,8 +32,25 @@ export default {
   computed: {
     ...mapState('stollar', {
       stollar: 'table',
-    })
+    }),
+    getStollar() {
+      if(this.stollar) {
+        let data = this.stollar.slice()
+        data.shift()
+        return data
+      }
+      return []
+    },
+    getAfitsant() {
+      return localStorage.getItem('fullName')
+    }
   },
+  methods: {
+    logOut() {
+      store.commit('auth/clear_data')
+      location.reload()
+    },
+  }
 };
 </script>
 <style scoped>
@@ -46,5 +65,11 @@ export default {
   padding: 0;
   margin: 0;
   list-style-type: none;
+}
+.logout {
+  position: fixed !important;
+  top: 10px;
+  left: 15px;
+  padding: 15px !important;
 }
 </style>

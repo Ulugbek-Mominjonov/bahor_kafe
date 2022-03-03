@@ -210,8 +210,10 @@ import { DateTime } from "luxon";
       }
     },
     created() {
-      store.commit('director/ActiveSideBar')
       store.dispatch('afitsant/afitsants')
+    },
+    mounted() {
+      store.commit('director/ActiveSideBar')
     },
     computed: {
       ...mapState('afitsant', {

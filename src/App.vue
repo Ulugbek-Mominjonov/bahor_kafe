@@ -27,6 +27,8 @@
           </svg> -->
           Afitsantlar <br> bo'limi
         </router-link>
+        <router-link class="link afitantlar" :class="{active: tabItem=='afitsant'}" to="/statistika">Statistika</router-link>
+        <v-btn color="warning" class="logout" @click="logOut">Chiqish</v-btn>
       </div>
       <div v-show="cashierSideBar" class="side-bar">
         <router-link to="/" class="link back">
@@ -42,6 +44,7 @@
         <router-link class="link afitantlar" :class="{active: tabItem=='afitsant'}" to="/afitsants">
           Afitsantlar <br> bo'limi
         </router-link>
+        <v-btn color="warning" class="logout" @click="logOut">Chiqish</v-btn>
       </div>
       <router-view />
     </v-main>
@@ -49,7 +52,7 @@
 </template>
 
 <script>
-// import store from '@/store/index';
+import store from '@/store/index';
 import { mapState } from 'vuex';
 export default {
   name: "App",
@@ -77,6 +80,10 @@ export default {
   methods: {
     select() {
       console.log(1);
+    },
+    logOut() {
+      store.commit('auth/clear_data')
+      location.reload()
     }
   }
 };
@@ -116,6 +123,7 @@ html {
   background-color: #002734 !important;
   color: #FFFFFF !important;
   text-transform: uppercase !important;
+  font-size: 14px !important;
 }
 .v-data-table-header__icon {
   color: white !important;
@@ -172,5 +180,11 @@ svg {
 }
 .deatil-data-table tr:last-child:hover, .sales-data-table tr:last-child:hover {
   color: black;
+}
+.logout {
+  position: absolute !important;
+  bottom: 30px;
+  padding: 5px !important;
+  font-size: 12px !important;
 }
 </style>

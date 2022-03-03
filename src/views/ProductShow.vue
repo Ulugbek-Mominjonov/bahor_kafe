@@ -345,6 +345,8 @@ import store from '@/store/index';
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 99;
+  background-color: #fff !important;
 }
 .changing-buttons {
   width: 80%;

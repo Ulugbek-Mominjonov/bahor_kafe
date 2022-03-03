@@ -134,6 +134,47 @@ export default {
   },
   setPayment(data) {
     return instance.post('/api/cafe/waiter/', data)
+  },
+  getCategory() {
+    return instance.get('/api/backoffice/category/')
+  },
+  getStatistika() {
+    return instance.get('/api/backoffice/chart/food/')
+  },
+  getCategoryFood(id) {
+    return instance.get('/api/backoffice/chart/food/', {
+      params: {
+        category: id
+      }
+    })
+  },
+  getFilterFoods(id, last, current) {
+    return instance.get('/api/backoffice/chart/food/', {
+      params: {
+        category: id,
+        dateBefore: last,
+        dateAfter: current
+      }
+    })
+  },
+  getFilterDateFoods(last, current) {
+    return instance.get('/api/backoffice/chart/food/', {
+      params: {
+        dateBefore: last,
+        dateAfter: current
+      }
+    })
+  },
+  getAllProfit() {
+    return instance.get('/api/backoffice/profit-money/')
+  },
+  getFilterProfit(last, current){
+    return instance.get('/api/backoffice/profit-money/', {
+      params: {
+        dateBefore: last,
+        dateAfter: current
+      }
+    })
   }
 
 };

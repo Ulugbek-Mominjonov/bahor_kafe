@@ -1,9 +1,45 @@
 <template>
-  <router-link class="link stoll-link" :to="{name: 'Menu', params: {id: nomer.id}}">
+  <div class="stoll-link">
     <div 
       class="stoll"
-      :class="{active: !nomer.isFree}">{{nomer.number}}</div>
-  </router-link>
+      :class="{active: !nomer.isFree}"
+      @click="table()"
+      >{{nomer.number}}</div>
+      <v-dialog
+        v-model="dialog"
+        scrollable 
+        max-width="200px"
+        transition="dialog-transition"
+      >
+        <v-card>
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="mx-2"
+              fab
+              dark
+              color="cyan"
+              @click="changeOrder"
+              v-show="!nomer.isFree"
+            >
+              <v-icon dark>
+                mdi-pencil
+              </v-icon>
+            </v-btn>
+            <v-btn
+              class="mx-2"
+              fab
+              dark
+              color="indigo"
+              @click="addOrder"
+            >
+              <v-icon dark>
+                mdi-plus
+              </v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -16,6 +52,26 @@
         type: String
       },
     },
+    data() {
+      return {
+        dialog: false
+      }
+    },
+    methods: {
+      addOrder() {
+        let id = this.nomer.id
+        this.$router.push({name: 'Menu', params: {id: id}})
+        this.dialog = false
+      },
+      table() {
+        this.dialog = true
+      },
+      changeOrder() {
+        let id = this.nomer.id
+        this.$router.push({name: 'Menu', params: {id: id}})
+        this.dialog = false
+      }
+    }
   }
 </script>
 
@@ -33,6 +89,7 @@
 }
 .stoll-link {
   display: block;
+  cursor: pointer;
 }
 .active{
   background-color: red;

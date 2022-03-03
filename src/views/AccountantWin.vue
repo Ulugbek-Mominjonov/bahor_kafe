@@ -5,35 +5,67 @@
           <div class="component-info text-center mt-5 mb-3 align-center">
             <h2 class="component-title">"Bahor kafe"</h2>
             <p class="component-text">Bag'dod tumani, Bag'dod shaxarchasi</p>
+          </div>
+          <div>
             <p class="stoll-number">
               <span class="table-number">{{tableId}} - stoll</span>
               <span class="table-afitsant">Afitsant: {{getAfitsant}}</span>
             </p>
+            <v-data-table
+              :headers="headers"
+              :items="foods"
+              :items-per-page="10"
+              class="elevation-1"
+              light
+              no-data-text="Bu stoll bo'sh"
+            ></v-data-table>
+            <div class="d-flex total">
+              <p class="total-heading">Umumiy summa</p>
+              <p class="total-cost">{{getTotal}}</p>
+            </div>
+            <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
+                <v-btn class="button" color="primary">
+                  Chek chiqarish
+                </v-btn>
+                <v-btn class="button" dark color="primary" @click="pay('cash')">
+                  Naqd pul orqali to'lash
+                </v-btn>
+                <v-btn class="button" dark color="primary" @click="pay('card')">
+                  Plastik orqali to'lash
+                </v-btn>
+            </div>
           </div>
-          <v-data-table
-            :headers="headers"
-            :items="foods"
-            :items-per-page="10"
-            class="elevation-1"
-            light
-            no-data-text="Bu stoll bo'sh"
-          ></v-data-table>
-          <div class="d-flex total">
-            <p class="total-heading">Umumiy summa</p>
-            <p class="total-cost">{{getTotal}}</p>
+
+          <div class="mt-5">
+            <p class="stoll-number">
+              <span class="table-number">{{tableId}} - stoll</span>
+              <span class="table-afitsant">Afitsant: {{getAfitsant}}</span>
+            </p>
+            <v-data-table
+              :headers="headers"
+              :items="foods"
+              :items-per-page="10"
+              class="elevation-1"
+              light
+              no-data-text="Bu stoll bo'sh"
+            ></v-data-table>
+            <div class="d-flex total">
+              <p class="total-heading">Umumiy summa</p>
+              <p class="total-cost">{{getTotal}}</p>
+            </div>
+            <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
+                <v-btn class="button" color="primary">
+                  Chek chiqarish
+                </v-btn>
+                <v-btn class="button" dark color="primary" @click="pay('cash')">
+                  Naqd pul orqali to'lash
+                </v-btn>
+                <v-btn class="button" dark color="primary" @click="pay('card')">
+                  Plastik orqali to'lash
+                </v-btn>
+            </div>
           </div>
         </div>
-        <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
-            <v-btn class="button" color="primary">
-              Chek chiqarish
-            </v-btn>
-            <v-btn class="button" dark color="primary" @click="pay('cash')">
-              Naqd pul orqali to'lash
-            </v-btn>
-            <v-btn class="button" dark color="primary" @click="pay('card')">
-              Plastik orqali to'lash
-            </v-btn>
-          </div>
     </div>
     <div class="tables">
       <h1 class="tables-title">Stollar</h1>
@@ -158,12 +190,13 @@
   flex-grow: 1;
 }
 .ordered-foods {
-  width: 50%;
+  width: 55%;
   padding-left: 15px;
 }
 .foods-list {
-  height: calc(100vh - 76px);
+  height: 100vh;
   overflow-y: scroll;
+  padding-right: 15px;
 }
 .stoll-number {
   width: 70%;
@@ -195,7 +228,7 @@
   text-transform: initial;
 }
 .tables {
-  width: 50%;
+  width: 45%;
   text-align: center;
   height: 100vh;
   overflow-y: scroll;

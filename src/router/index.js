@@ -15,6 +15,8 @@ import Afitsants from '@/views/Afitsants.vue';
 import AfitsantDetail from '@/views/AfitsantDetail.vue';
 import AfitsantCashierWin from '@/views/AfitsantCashierWin.vue';
 import ErrorTemplate from '@/views/ErrorTemplate.vue';
+import Statistika from '@/views/Statistika.vue';
+import StatistikaAll from '@/views/StatistikaAll.vue';
 const routes = [
   {
     path: "/",
@@ -112,6 +114,22 @@ const routes = [
     name: "AfitsantDetail",
     component: AfitsantDetail,
     props: true,
+    meta: {
+      role: 'director',
+    },
+  },
+  {
+    path: "/statistika",
+    name: "Statistika",
+    component: Statistika,
+    meta: {
+      role: 'director',
+    },
+  },
+  {
+    path: "/statistikaAll",
+    name: "StatistikaAll",
+    component: StatistikaAll,
     meta: {
       role: 'director',
     },

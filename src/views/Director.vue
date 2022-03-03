@@ -233,6 +233,8 @@ import { DateTime } from "luxon";
     created() {
       store.dispatch('director/income')
       store.dispatch('director/outcome')
+    },
+    mounted() {
       store.commit('director/ActiveSideBar')
     },
     computed: {
