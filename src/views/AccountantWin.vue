@@ -2,7 +2,7 @@
   <div class="d-flex main">
     <div class="ordered-foods">
         <div class="d-flex flex-column foods-list">
-          <div class="component-info text-center mt-5 mb-3 align-center">
+          <div class="component-info text-center mt-5 mb-3 align-center"> 
             <h2 class="component-title">"Bahor kafe"</h2>
             <p class="component-text">Bag'dod tumani, Bag'dod shaxarchasi</p>
             <v-alert type="success" class="d-inline-block px-14">
