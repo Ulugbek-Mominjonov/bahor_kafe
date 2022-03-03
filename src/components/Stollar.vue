@@ -2,28 +2,29 @@
   <div class="stoll-link">
     <div 
       class="stoll"
-      :class="{active: !nomer.isFree}"
       @click="table()"
       >{{nomer.number}}</div>
       <v-dialog
         v-model="dialog"
         scrollable 
-        max-width="200px"
+        max-width="500px"
         transition="dialog-transition"
       >
         <v-card>
-          <v-card-actions class="justify-center">
+          <v-card-title >
+            Ushbu stoldagi zakazlar
+          </v-card-title>
+          <v-card-actions class="justify-center flex-wrap">
             <v-btn
               class="mx-2"
               fab
               dark
               color="cyan"
-              @click="changeOrder"
-              v-show="!nomer.isFree"
+              v-for="(item, index) in getOrdersOnTables"
+              :key="index"
+              @click="changeOrder(item.id)"
             >
-              <v-icon dark>
-                mdi-pencil
-              </v-icon>
+              {{ item.todayId }}
             </v-btn>
             <v-btn
               class="mx-2"
@@ -43,6 +44,8 @@
 </template>
 
 <script>
+  import store from '@/store/index';
+  import { mapState } from 'vuex';
   export default {
     props: {
       nomer: {
@@ -57,18 +60,33 @@
         dialog: false
       }
     },
+    computed: {
+      ...mapState('stollar', {
+        ordersTables: 'ordersTable'
+      }),
+      getOrdersOnTables() {
+        if(this.ordersTables) {
+          return this.ordersTables
+        }
+        return null
+      },
+    },
     methods: {
       addOrder() {
         let id = this.nomer.id
-        this.$router.push({name: 'Menu', params: {id: id}})
+        this.$router.push({name: 'AddOrder', params: {id: id}})
         this.dialog = false
       },
       table() {
-        this.dialog = true
-      },
-      changeOrder() {
         let id = this.nomer.id
-        this.$router.push({name: 'Menu', params: {id: id}})
+        store.dispatch('stollar/ordersOnTables', id)
+          .then(() => {
+            this.dialog = true
+          })
+      },
+      changeOrder(value) {
+        console.log(value);
+        this.$router.push({name: 'Menu', params: {id: value}})
         this.dialog = false
       }
     }

@@ -64,13 +64,19 @@ export default {
   getTables() {
     return instance.get("/api/cafe/tables/");
   },
+  getOrdersOnTables(id) {
+    return instance.get(`/api/cafe/orders/table/${id}/`);
+  },
   getFoods() {
     return instance.get("/api/cafe/categories/");
   },
   getTableDetail(id) {
     return instance.get(`/api/cafe/table/${id}/`)
   },
-  setOrder(data) {
+  setOrder(data, id) {
+    return instance.put(`/api/cafe/order/${id}/`, data)
+  },
+  postOrder(data) {
     return instance.post('/api/cafe/order/', data)
   },
   deleteOrder(id) {

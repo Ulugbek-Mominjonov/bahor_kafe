@@ -5,49 +5,23 @@
           <div class="component-info text-center mt-5 mb-3 align-center">
             <h2 class="component-title">"Bahor kafe"</h2>
             <p class="component-text">Bag'dod tumani, Bag'dod shaxarchasi</p>
+            <v-alert type="success" class="d-inline-block px-14">
+              {{tableId}} - stoll
+            </v-alert>
           </div>
-          <div>
+          <div v-for="(item, index) in foods" :key="index">
             <p class="stoll-number">
-              <span class="table-number">{{tableId}} - stoll</span>
-              <span class="table-afitsant">Afitsant: {{getAfitsant}}</span>
+              <span class="table-number">{{item.todayId}} - zakaz</span>
+              <span class="table-afitsant">Afitsant: {{item.waiter}}</span>
             </p>
             <v-data-table
               :headers="headers"
-              :items="foods"
+              :items="item.details"
               :items-per-page="10"
               class="elevation-1"
               light
               no-data-text="Bu stoll bo'sh"
-            ></v-data-table>
-            <div class="d-flex total">
-              <p class="total-heading">Umumiy summa</p>
-              <p class="total-cost">{{getTotal}}</p>
-            </div>
-            <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
-                <v-btn class="button" color="primary">
-                  Chek chiqarish
-                </v-btn>
-                <v-btn class="button" dark color="primary" @click="pay('cash')">
-                  Naqd pul orqali to'lash
-                </v-btn>
-                <v-btn class="button" dark color="primary" @click="pay('card')">
-                  Plastik orqali to'lash
-                </v-btn>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p class="stoll-number">
-              <span class="table-number">{{tableId}} - stoll</span>
-              <span class="table-afitsant">Afitsant: {{getAfitsant}}</span>
-            </p>
-            <v-data-table
-              :headers="headers"
-              :items="foods"
-              :items-per-page="10"
-              class="elevation-1"
-              light
-              no-data-text="Bu stoll bo'sh"
+              hide-default-footer
             ></v-data-table>
             <div class="d-flex total">
               <p class="total-heading">Umumiy summa</p>
@@ -70,7 +44,7 @@
     <div class="tables">
       <h1 class="tables-title">Stollar</h1>
       <ul class="table-list">
-        <li class="table-item" v-for="table in tables" :key="table.id"  :class="{active: !table.isFree, yellow: activeTable==table.id ? true: false}" @click="detail(table)">{{table.number}}</li>
+        <li class="table-item" v-for="table in tables" :key="table.id"  :class="{yellow: activeTable==table.id ? true: false}" @click="detail(table)">{{table.number}}</li>
       </ul>
     </div>
   </div>
@@ -112,20 +86,29 @@
       }),
       foods() {
         let data = []
-        if(this.ordered && this.ordered.order) {
-          this.ordered.order.detail.forEach(element => {
-            data.push({
-              name: element.foodDetail.name,
-              cost: element.foodDetail.price,
-              count: parseInt(element.quantity),
-              summ: element.price
+        if(this.ordered && this.ordered.orders) {
+          this.ordered.orders.forEach(item => {
+            let foo = {
+              todayId: item.todayId,
+              waiter: item.waiter,
+              details: []
+            }
+            item.detail.forEach(element => {
+              foo.details.push({
+                name: element.foodDetail.name,
+                cost: element.foodDetail.price,
+                count: parseInt(element.quantity),
+                summ: element.price
+              })
             })
-          })
-          data.unshift({
-            name: "Klentlar soni",
-            cost: 1000,
-            count: this.ordered.order.clientCount,
-            summ: this.ordered.order.clientCost
+            foo.details.unshift({
+              name: "Klentlar soni",
+              cost: 1000,
+              count: item.clientCount,
+              summ: item.clientCost
+            })
+
+            data.push(foo)
           })
         }
         return data
@@ -152,10 +135,13 @@
     methods: {
       detail(payload) {
         this.activeTable = payload.id
-        if(payload.number == 0 && payload.isFree) {
-          this.$router.push({name: "Menu", params: {id: payload.id}})
+        if(payload.number == 0 && this.foods.length == 0) {
+          console.log(1);
+          this.$router.push({name: 'AddOrder', params: {id: payload.id}})
         }
-        store.dispatch('cashier/getDatail', payload.id)
+        else {
+          store.dispatch('cashier/getDatail', payload.id)
+        }
       },
       pay(type) {
         let data = {
@@ -252,7 +238,7 @@
   width: 28%;
   font-weight: 800;
   font-size: 60px;
-  line-height: 120px;
+  line-height: 105px;
   margin-bottom: 2%;
   color: #000000;
   background: rgba(20, 255, 0, 0.5);

@@ -5,36 +5,29 @@ export const state = {
   table: null,
   foods: null,
   ordered: {},
+  ordersTable: []
 };
 
 export const mutations = {
   SET_TABLE(state, data) {
     state.table = data;
   },
+  SET_ORDERS_TABLE(state, data) {
+    state.ordersTable = data
+  },
   SET_FOODS(state, data) {
     state.foods = data;
   },
   SET_DETAIL(state, value) {
-    if ("message" in value.data) {
-      state.ordered = {
-        id: value.id,
-        order: {
-          clientCount: 0,
-          detail: [
-          ],
-        },
-      };
-    } else {
-      state.ordered = value.data;
-    }
+    state.ordered = value;
   },
   ADD_FOODS(state, {value,index}) {
     if(index > -1){
-      let foo = parseInt(state.ordered.order.detail[index].quantity) + 1;
-      state.ordered.order.detail[index].quantity = foo;
+      let foo = parseInt(state.ordered.details[index].quantity) + 1;
+      state.ordered.details[index].quantity = foo;
     }
     else {
-      state.ordered.order.detail.push({
+      state.ordered.details.push({
         food: value.id,
         foodDetail: {
           name: value.name,
@@ -45,26 +38,26 @@ export const mutations = {
     }
   },
   REMOVE_COUNT(state, index) {
-    let id = parseInt(state.ordered.order.detail[index].quantity)
+    let id = parseInt(state.ordered.details[index].quantity)
     if(id > 1){
-      state.ordered.order.detail[index].quantity = id - 1;
+      state.ordered.details[index].quantity = id - 1;
     }
     else if(id == 1) {
-      state.ordered.order.detail.splice(index, 1)
+      state.ordered.details.splice(index, 1)
     }
   },
   ADD_COUNT(state, index) {
-    let foo = parseInt(state.ordered.order.detail[index].quantity) + 1;
-      state.ordered.order.detail[index].quantity = foo;
+    let foo = parseInt(state.ordered.details[index].quantity) + 1;
+      state.ordered.details[index].quantity = foo;
   },
   MINUS_CLIENT(state) {
-    let item = state.ordered.order.clientCount
+    let item = state.ordered.clientCount
     if(item != 0) {
-      state.ordered.order.clientCount -= 1
+      state.ordered.clientCount -= 1
     }
   },
   ADD_CLIENT(state) {
-    state.ordered.order.clientCount += 1
+    state.ordered.clientCount += 1
   },
   FOO() {
     console.log("Ma'lumot qabul qilindi!!!");
@@ -82,14 +75,19 @@ export const actions = {
       commit("SET_FOODS", res.data);
     });
   },
-  async detail({ commit }, id) {
-    return await EventService.getTableDetail(id).then((res) => {
-      let value = {
-        data: res.data,
-        id: id,
-      };
-      commit("SET_DETAIL", value);
+  detail({ commit }, id) {
+    return EventService.getTableDetail(id)
+      .then(res => {
+      commit("SET_DETAIL", res.data);
     })
+  },
+  createOrder({commit}, id) {
+    let data = {
+      table: id,
+      clientCount: 0,
+      details: []
+    }
+    commit("SET_DETAIL", data)
   },
   food({commit, getters}, value) {
     let index = getters.getFoodById(value.id)
@@ -109,7 +107,7 @@ export const actions = {
     return id;
   },
   clientMinus({commit, state}, index) {
-    let item = state.ordered.order.clientCount
+    let item = state.ordered.clientCount
     if(item == 0) {
       return null;
     } else {
@@ -121,20 +119,26 @@ export const actions = {
     commit('ADD_CLIENT')
     return index
   },
-  async setOrder({commit}, value) {
-    let response = await EventService.setOrder(value).catch(err => console.log(err))
+  setOrder({commit, state}, value) {
+    let id = state.ordered.id
+    EventService.setOrder(value, id).catch(err => console.log(err))
     commit("FOO")
-    console.log(response.data);
   },
   async deleteOrders({state}) {
     let id = state.ordered.order.id
     await EventService.deleteOrder(id)
       .then(res => console.log(res))
+  },
+  ordersOnTables({commit}, id) {
+    EventService.getOrdersOnTables(id)
+      .then(res => {
+        commit('SET_ORDERS_TABLE', res.data)
+      })
   }
 };
 
 export const getters = {
   getFoodById: (state) => (id) => {
-    return state.ordered.order.detail.findIndex(item => item.food == id)
+    return state.ordered.details.findIndex(item => item.food == id)
   }
 }

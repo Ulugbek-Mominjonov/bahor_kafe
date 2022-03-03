@@ -193,19 +193,19 @@ import store from '@/store/index';
         return this.$route.params.id
       },
       getClientCount() {
-        if(this.ordered && this.ordered.order) {
-          return this.ordered.order.clientCount
+        if(this.ordered) {
+          return this.ordered.clientCount
         }
         return null;
       },
       getDetail() {
-        if(this.ordered && this.ordered.order) {
-          return this.ordered.order.detail
+        if(this.ordered) {
+          return this.ordered.details
         }
         return null;
       },
       isActive() {
-        if(this.ordered.order && this.ordered.order.id){
+        if(this.ordered && this.ordered.id){
           return false;
         } 
         return true;
@@ -241,26 +241,26 @@ import store from '@/store/index';
             .then(res => this.selected = res)
         }
       },
-      async order() {
+      order() {
         let getOrder = this.ordered
         let data = {
-          "table": getOrder.id,
-          "client_count": getOrder.order.clientCount,
+          "table": getOrder.table,
+          "client_count": getOrder.clientCount,
           "details": []
         };
-        getOrder.order.detail.forEach(item => {
+        getOrder.details.forEach(item => {
           data.details.push({
             "food": item.food,
             "quantity": item.quantity
           })
         });
-        await store.dispatch('stollar/setOrder', data)
+        store.dispatch('stollar/setOrder', data)
         let key = parseInt(this.$route.params.id)
         if(key == 8) {
           this.$router.push('/accountant')
         }
         else {
-          await store.dispatch('stollar/detail', key)
+          store.dispatch('stollar/detail', key)
             .then(() => {
               this.dialog = true
               this.orderMessage = "Zakaz qabul qilindi" 

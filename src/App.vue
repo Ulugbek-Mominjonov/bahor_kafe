@@ -123,7 +123,6 @@ html {
   background-color: #002734 !important;
   color: #FFFFFF !important;
   text-transform: uppercase !important;
-  font-size: 14px !important;
 }
 .v-data-table-header__icon {
   color: white !important;

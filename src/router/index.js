@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import Home from "../views/Home.vue";
 import Menu from '../views/ProductShow.vue';
-import OrderedFood from '../views/OrderedFood.vue';
 import AccountantWindow from '../views/AccountantWin.vue';
 import Director from '@/views/Director.vue';
 import ProductDetailIncome from '@/views/ProductDetailIncome.vue';
@@ -17,6 +16,7 @@ import AfitsantCashierWin from '@/views/AfitsantCashierWin.vue';
 import ErrorTemplate from '@/views/ErrorTemplate.vue';
 import Statistika from '@/views/Statistika.vue';
 import StatistikaAll from '@/views/StatistikaAll.vue';
+import AddOrder from '@/views/AddOrder.vue';
 const routes = [
   {
     path: "/",
@@ -42,9 +42,10 @@ const routes = [
     },
   },
   {
-    path: "/orderFood",
-    name: "OrderedFood",
-    component: OrderedFood,
+    path: "/addOrder/:id",
+    name: "AddOrder",
+    component: AddOrder,
+    props: true,
     meta: {
       role: 'waiter',
     },
