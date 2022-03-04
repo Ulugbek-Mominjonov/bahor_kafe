@@ -47,7 +47,7 @@ export const actions = {
   async filterOutcome({commit}, data) {
     await EventService.getFilterOutcome(data.last, data.current)
       .then(res => {
-        commit('SET_INCOME', res.data)
+        commit('SET_OUTCOME', res.data)
       })
   },
   async product({commit}, id) {

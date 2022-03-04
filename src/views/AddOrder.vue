@@ -35,8 +35,8 @@
           <br />
         </div>
         <div class="ordered-list">
-          <h2 class="product-name">
-            Zakalar ro'yhati <span>{{ tableId }} - stoll</span>
+          <h2 class="product-name text-center">
+            Zakalar ro'yhati <span class="d-block d-md-inline-block text-center">{{ tableId }} - stoll</span>
           </h2>
           <ul class="selected-list">
             <li class="selected-item">
@@ -334,5 +334,32 @@ export default {
 .buttons {
   display: flex;
   justify-content: center;
+}
+@media screen and (max-width: 1100px) {
+  .products {
+    width: 65%;
+  }
+  .ordered-list{
+    flex-grow: 1;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .ordered-list .order-btn {
+    margin-right: 0 !important;
+    width: 90%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .products {
+    width: 60%;
+  }
+  .product-item {
+    width: 180px !important;
+  }
+}
+@media screen and (max-width: 700px) {
+  .products {
+    width: 50%;
+  }
 }
 </style>

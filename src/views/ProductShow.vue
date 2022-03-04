@@ -18,7 +18,7 @@
           <br>
         </div>
         <div class="ordered-list">
-          <h2 class="product-name">Zakalar ro'yhati <span>{{tableId }} - stoll</span></h2>
+          <h2 class="product-name text-center">Zakalar ro'yhati <span class="d-block d-md-inline-block text-center">{{tableId }} - stoll</span></h2>
           <ul class="selected-list">
             <li class="selected-item">
               <span class="left-col">Nomi</span>
@@ -60,9 +60,9 @@
             </v-btn>
           </div>
 
-          <div class="mb-5 buttons" :class="{'beetween': !isActive}">
+          <div class="mb-5 buttons flex-wrap justify-center justify-md-between" :class="{'beetween': !isActive}">
             <v-btn
-              class="order-btn"
+              class="order-btn mb-5 mr-3"
               dark
               color="success"
               @click="order()"
@@ -70,7 +70,7 @@
               Zakaz berish
             </v-btn>
             <v-btn
-              class="order-btn"
+              class="order-btn mb-5"
               :class="{'d-none': isActive}"
               dark
               color="red"
@@ -371,5 +371,33 @@ import store from '@/store/index';
 .buttons {
   display: flex;
   justify-content: center;
+}
+
+@media screen and (max-width: 1100px) {
+  .products {
+    width: 65%;
+  }
+  .ordered-list{
+    flex-grow: 1;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .ordered-list .order-btn {
+    margin-right: 0 !important;
+    width: 90%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .products {
+    width: 60%;
+  }
+  .product-item {
+    width: 180px !important;
+  }
+}
+@media screen and (max-width: 700px) {
+  .products {
+    width: 50%;
+  }
 }
 </style>

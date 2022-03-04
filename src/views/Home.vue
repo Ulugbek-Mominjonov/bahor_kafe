@@ -72,4 +72,13 @@ export default {
   left: 15px;
   padding: 15px !important;
 }
+@media screen and (max-width: 800px) {
+  .logout {
+    top: 44px;
+    left: 0;
+  }
+  .afitsant {
+    margin-bottom: 15px;
+  }
+}
 </style>

@@ -9,7 +9,7 @@
               {{tableId}} - stoll
             </v-alert>
           </div>
-          <div v-for="(item, index) in foods" :key="index">
+          <div v-for="(item, index) in foods" :key="index" class="mb-8">
             <p class="stoll-number">
               <span class="table-number">{{item.todayId}} - zakaz</span>
               <span class="table-afitsant">Afitsant: {{item.waiter}}</span>
@@ -25,7 +25,7 @@
             ></v-data-table>
             <div class="d-flex total">
               <p class="total-heading">Umumiy summa</p>
-              <p class="total-cost">{{getTotal}}</p>
+              <p class="total-cost">{{item.total}}</p>
             </div>
             <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
                 <v-btn class="button mb-5" color="primary">
@@ -39,6 +39,17 @@
                 </v-btn>
             </div>
           </div>
+          <v-alert
+            v-if="message"
+            border="top"
+            colored-border
+            type="info"
+            elevation="2"
+            height="100"
+            class="d-flex align-center justify-center"
+          >
+            <span>Kerakli Stollni tanlang!!!</span>
+          </v-alert>
           <v-alert
             v-if="isOrder"
             border="top"
@@ -83,7 +94,8 @@
         ],
         activeTable: null,
         table: null,
-        isOrder: false
+        isOrder: false,
+        message: true
       }
     },
     created() {
@@ -106,6 +118,7 @@
               id: item.id,
               todayId: item.todayId,
               waiter: item.waiter,
+              total: item.total,
               details: []
             }
             item.detail.forEach(element => {
@@ -140,17 +153,12 @@
         }
         return null
       },
-      getTotal() {
-        if(this.ordered && this.ordered.order) {
-          return this.ordered.order.total
-        }
-        return null
-      },
     },
     methods: {
       detail(payload) {
         this.activeTable = payload.id
         this.table = payload
+        this.message = false
         store.dispatch('cashier/getDatail', payload.id)
           .then(() => {
             if(payload.number == 0 && this.foods.length == 0) {

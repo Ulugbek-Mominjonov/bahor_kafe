@@ -116,6 +116,12 @@ html {
   padding-left: 45px;
   padding-right: 45px;
 }
+@media screen and (max-width: 1100px) {
+  .my-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
 .link {
   text-decoration: none;
 }

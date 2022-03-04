@@ -176,11 +176,9 @@
       <v-data-table
           :headers="header"
           :items="product"
-          :items-per-page="10"
           class="elevation-1"
           light
           :no-data-text="noDate"
-          hide-default-footer
           @click:row="handleClick"
           :search="search"
       >
@@ -332,10 +330,12 @@ import { DateTime } from "luxon";
           last 
         }
         if(this.tabProduct == 'kirim') {
+          console.log(1);
           await store.dispatch('director/filterIncme', data)
           this.noDate = "Bu oraliqda mahsulot kelmagan"
         }
         else {
+          console.log(2);
           await store.dispatch('director/filterOutcome', data)
           this.noDate = "Bu oraliqda mahsulot ishlatilmagan"
         }

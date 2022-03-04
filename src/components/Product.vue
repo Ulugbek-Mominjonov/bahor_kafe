@@ -2,12 +2,21 @@
   <div class="product-wrapper">
     <h2 class="product-name">{{product.name}}</h2>
     <ul class="d-flex product-list">
-      <li class="product-item" v-for="(item) in product.foods" :key="item.id" @click="addProduct(item, stoll)">
+      <li class="product-item" v-for="(item) in product.foods" :key="item.id" @click="addProduct(item)">
         <span class="cost">{{item.price}}</span>
-        <span class="name">{{item.name}}</span>
+        <span class="text-capitalize name" :class="{'red': !item.isHave}">{{item.name}}</span>
         <img class="img" :src="item.image" alt="rasm">
       </li>
     </ul>
+    <v-dialog
+      v-model="dialog"
+      max-width="500px"
+      transition="dialog-transition"
+    >
+      <v-alert type="warning">
+        Bu mahsulot mavjud emas!!!
+      </v-alert>
+    </v-dialog>
   </div>
 </template>
 
@@ -25,9 +34,19 @@ import store from '@/store/index';
         type: String
       }
     },
+    data() {
+      return {
+        dialog: false
+      }
+    },
     methods: {
       addProduct(product) {
-        store.dispatch('stollar/food', product)
+        if(product.isHave) {
+          store.dispatch('stollar/food', product)
+        }
+        else {
+          this.dialog = true
+        }
       }
     },
   }
@@ -89,5 +108,19 @@ import store from '@/store/index';
   top: 0;
   left: 0;
   z-index: 2;
+}
+.red {
+  background: none;
+  background-color: #F50B0B;
+}
+@media screen and (max-width: 900px) {
+  .product-item {
+    width: 180px;
+  }
+}
+@media screen and (max-width: 700px) {
+  .product-item {
+    width: 200px;
+  }
 }
 </style>
