@@ -125,7 +125,7 @@ export const actions = {
     commit("FOO")
   },
   async deleteOrders({state}) {
-    let id = state.ordered.order.id
+    let id = state.ordered.id
     await EventService.deleteOrder(id)
       .then(res => console.log(res))
   },

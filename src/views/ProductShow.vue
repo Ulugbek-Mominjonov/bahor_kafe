@@ -142,7 +142,7 @@
             <v-btn
               color="primary"
               text
-              @click="dialog = false"
+              @click="submit()"
             >
               Ok
             </v-btn>
@@ -190,7 +190,7 @@ import store from '@/store/index';
         if (this.$route.params.id == 8) {
           return 0
         }
-        return this.$route.params.id
+        return this.ordered.table
       },
       getClientCount() {
         if(this.ordered) {
@@ -275,8 +275,13 @@ import store from '@/store/index';
           .then(() => {
             this.orderMessage = "Zakaz bekor qilindi!"
             this.dialog = true
-            location.reload()
           })
+      },
+      submit() {
+        if(this.orderMessage == "Zakaz bekor qilindi!") {
+          this.$router.push('/home')
+        }
+        this.dialog = false
       }
     }
   }

@@ -6,7 +6,7 @@
       >{{nomer.number}}</div>
       <v-dialog
         v-model="dialog"
-        scrollable 
+        scrollable
         max-width="500px"
         transition="dialog-transition"
       >

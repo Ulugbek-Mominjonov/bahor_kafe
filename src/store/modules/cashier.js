@@ -34,20 +34,10 @@ export const actions = {
       .catch(err => alert(err))
   },
   async getDatail({commit}, id) {
-    let res = await EventService.getTableDetail(id)
+    let res = await EventService.getTableDetailCashier(id)
       .catch(err => alert(err))
     commit('SET_DETAIL', res.data)
     console.log(res.data);
-  },
-  async payment({state}, payload) {
-    let id = state.food_detail.order.id
-    await EventService.orderUpdate(id, payload)
-      .then (() => {
-        alert("To'lov qabul qilindi!")
-      })
-      .catch(() => {
-        alert("Bu buyurtma uchun pul to'lanib bo'lingan")
-      })
   },
   async afitsants({commit}) {
     await EventService.getAfitsantForCashier()

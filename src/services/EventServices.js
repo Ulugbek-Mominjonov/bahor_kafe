@@ -71,6 +71,9 @@ export default {
     return instance.get("/api/cafe/categories/");
   },
   getTableDetail(id) {
+    return instance.get(`/api/cafe/order/${id}/`)
+  },
+  getTableDetailCashier(id) {
     return instance.get(`/api/cafe/table/${id}/`)
   },
   setOrder(data, id) {
@@ -80,10 +83,10 @@ export default {
     return instance.post('/api/cafe/order/', data)
   },
   deleteOrder(id) {
-    return instance.delete(`/api/cafe/order/delete/${id}/`)
+    return instance.delete(`/api/cafe/order/${id}/`)
   },
   orderUpdate(id, data) {
-    return instance.put(`/api/cafe/order/${id}/`, data)
+    return instance.put(`/api/cafe/pay/${id}/`, data)
   },
   getIncome() {
     return instance.get('/api/backoffice/product/income/')

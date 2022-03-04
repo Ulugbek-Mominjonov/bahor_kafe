@@ -28,17 +28,28 @@
               <p class="total-cost">{{getTotal}}</p>
             </div>
             <div class="my-5 buttons" :class="{'d-none': (activeTable == null || foods.length==0) ? true: false}">
-                <v-btn class="button" color="primary">
+                <v-btn class="button mb-5" color="primary">
                   Chek chiqarish
                 </v-btn>
-                <v-btn class="button" dark color="primary" @click="pay('cash')">
+                <v-btn class="button mb-5" dark color="primary" @click="pay('cash', item.id)">
                   Naqd pul orqali to'lash
                 </v-btn>
-                <v-btn class="button" dark color="primary" @click="pay('card')">
+                <v-btn class="button mb-5" dark color="primary" @click="pay('card', item.id)">
                   Plastik orqali to'lash
                 </v-btn>
             </div>
           </div>
+          <v-alert
+            v-if="isOrder"
+            border="top"
+            colored-border
+            type="info"
+            elevation="2"
+            height="100"
+            class="d-flex align-center justify-center"
+          >
+            <span>Bu stollda zakazlar mavjud emas</span>
+          </v-alert>
         </div>
     </div>
     <div class="tables">
@@ -51,6 +62,7 @@
 </template>
 
 <script>
+  import EventService from '@/services/EventServices.js'
   import store from '@/store/index';
   import { mapState } from 'vuex';
   export default {
@@ -69,7 +81,9 @@
           { text: "Miqdori", align: 'center', value: "count", class: "header-style", divider: true },
           { text: "Narxi (so'm)", align: 'center', value: "summ", class: "header-style", divider: true },
         ],
-        activeTable: null
+        activeTable: null,
+        table: null,
+        isOrder: false
       }
     },
     created() {
@@ -89,6 +103,7 @@
         if(this.ordered && this.ordered.orders) {
           this.ordered.orders.forEach(item => {
             let foo = {
+              id: item.id,
               todayId: item.todayId,
               waiter: item.waiter,
               details: []
@@ -130,31 +145,45 @@
           return this.ordered.order.total
         }
         return null
-      }
+      },
     },
     methods: {
       detail(payload) {
         this.activeTable = payload.id
-        if(payload.number == 0 && this.foods.length == 0) {
-          console.log(1);
-          this.$router.push({name: 'AddOrder', params: {id: payload.id}})
-        }
-        else {
-          store.dispatch('cashier/getDatail', payload.id)
-        }
-      },
-      pay(type) {
-        let data = {
-          "payment": {
-            "total_amount": this.ordered.order.total,
-            "payment_type": type
-          }
-        }
-        store.dispatch('cashier/payment', data)
+        this.table = payload
+        store.dispatch('cashier/getDatail', payload.id)
           .then(() => {
-            this.activeTable = null
-            location.reload()
+            if(payload.number == 0 && this.foods.length == 0) {
+              this.$router.push({name: 'AddOrder', params: {id: payload.id}})
+            }
+            else if(this.foods.length == 0) {
+              this.isOrder = true
+            }
+            else {
+              this.isOrder = false
+            }
           })
+      },
+      pay(type, id) {
+        let data = {
+          type: {
+            "payment_type": type,
+          },
+          id: id
+        }
+        EventService.orderUpdate(data.id, data.type)
+        .then (() => {
+          alert("To'lov qabul qilindi!")
+          if(this.table.number != 0) {
+            this.detail(this.table)
+          }
+          else {
+            location.reload()
+          }
+        })
+        .catch(() => {
+          alert("Bu buyurtma uchun pul to'lanib bo'lingan")
+        })
       }
     },
     destroyed() {
@@ -208,6 +237,7 @@
 .buttons {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .button {
   font-size: 14px !important;
