@@ -1,20 +1,22 @@
 <template>
-    <div class="my-container stollar">
-      <h1 class=afitsant>Afitsant: <span>{{ getAfitsant }}</span></h1>
-      <p class="stoll">Stollar</p>
-      <ul class="stoll-list">
-        <li v-for="(item, index) in getStollar" :key="index">
-          <Stollar :nomer="item" :afitsant="$route.params.id"/>
-        </li>
-      </ul>
-      <v-btn color="warning" class="logout" @click="logOut">Chiqish</v-btn>
-    </div>
+  <div class="my-container stollar">
+    <h1 class="afitsant">
+      Afitsant: <span>{{ getAfitsant }}</span>
+    </h1>
+    <p class="stoll">Stollar</p>
+    <ul class="stoll-list">
+      <li v-for="(item, index) in getStollar" :key="index">
+        <Stollar :nomer="item" :afitsant="$route.params.id" />
+      </li>
+    </ul>
+    <v-btn color="warning" class="logout" @click="logOut">Chiqish</v-btn>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 import Stollar from "../components/Stollar";
-import store from '@/store/index';
+import store from "@/store/index";
 export default {
   name: "Home",
   components: {
@@ -23,38 +25,39 @@ export default {
   data() {
     return {
       afitsant: "",
-      dialog: true
-    }
+      dialog: true,
+    };
   },
   created() {
-    store.dispatch('stollar/table')
+    store.dispatch("stollar/table");
   },
   computed: {
-    ...mapState('stollar', {
-      stollar: 'table',
+    ...mapState("stollar", {
+      stollar: "table",
     }),
     getStollar() {
-      if(this.stollar) {
-        let data = this.stollar.slice()
-        data.shift()
-        return data
+      if (this.stollar) {
+        let data = this.stollar.slice();
+        data.shift();
+        return data;
       }
-      return []
+      return [];
     },
     getAfitsant() {
-      return localStorage.getItem('fullName')
-    }
+      return localStorage.getItem("fullName");
+    },
   },
   methods: {
     logOut() {
-      store.commit('auth/clear_data')
-      location.reload()
+      store.commit("auth/clear_data");
+      location.reload();
     },
-  }
+  },
 };
 </script>
 <style scoped>
-.afitsant, .stoll {
+.afitsant,
+.stoll {
   text-align: center;
 }
 .stoll-list {

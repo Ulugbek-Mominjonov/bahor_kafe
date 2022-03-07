@@ -2,76 +2,96 @@
   <div class="main">
     <div class="header">
       <div class="search-wrapper">
-        <input type="text" v-model="search" class="search" placeholder="search">
+        <input
+          type="text"
+          v-model="search"
+          class="search"
+          placeholder="search"
+        />
         <v-icon dark class="icon">mdi-magnify</v-icon>
       </div>
     </div>
 
-    <v-alert
-      type="success"
-      color="#006D7C"
-      class="alert"
-    >Ishlatilgan {{getName}} mahsuloti</v-alert>
+    <v-alert type="success" color="#006D7C" class="alert"
+      >Ishlatilgan <span class="text-capitalize" style="color: rgba(0,0,0,.87); font-weight: bold;">{{ getName }}</span> mahsuloti</v-alert
+    >
 
     <div class="data-table deatil-outcome-data-table">
       <v-data-table
-          :headers="headersOutcome"
-          :items="getProducts"
-          class="elevation-1"
-          light
-          no-data-text="Bu mahsulotdan hali ishlatilmadi"
-          hide-default-footer
-          :search="search"
+        :headers="headersOutcome"
+        :items="getProducts"
+        class="elevation-1"
+        light
+        no-data-text="Bu mahsulotdan hali ishlatilmadi"
+        hide-default-footer
+        :search="search"
       >
-      </v-data-table> 
+      </v-data-table>
     </div>
   </div>
 </template>
 
 <script>
-import store from '@/store/index';
-import { mapState } from 'vuex';
-  export default {
-    data() {
-      return {
-        search: '',
-        headersOutcome: [
-          {
-            text: 'Ishlatilgan Mahsulotlar miqdori(litr)',
-            align: 'start',
-            value: 'value',
-            class: "header-style",
-            divider: true
-          },
-          { text: "Ishlatilgan sanasi", value: "date", align: 'center', class: "header-style", divider: true},
-        ],
+import store from "@/store/index";
+import { mapState } from "vuex";
+export default {
+  data() {
+    return {
+      search: "",
+      headersOutcome: [
+        {
+          text: "Ishlatilgan sanasi",
+          value: "date",
+          align: "start",
+          class: "header-style",
+          divider: true,
+        },
+        {
+          text: "Ishlatilgan Mahsulotlar miqdori",
+          align: "center",
+          value: "value",
+          class: "header-style",
+          divider: true,
+        },
+        {
+          text: "Birligi",
+          align: "center",
+          value: "birligi",
+          class: "header-style",
+          divider: true,
+        },
+      ],
+    };
+  },
+  async created() {
+    let id = parseInt(this.$route.params.id);
+    await store.dispatch("director/product", id);
+  },
+  mounted() {
+    store.commit("director/ActiveSideBar");
+  },
+  computed: {
+    ...mapState("director", {
+      productDetails: "productDetail",
+    }),
+    getName() {
+      if (this.productDetails) {
+        return this.productDetails.name;
       }
+      return "";
     },
-    async created() {
-      let id = parseInt(this.$route.params.id)
-      await store.dispatch('director/product', id)
-    },
-    mounted() {
-      store.commit('director/ActiveSideBar')
-    },
-    computed: {
-      ...mapState('director', {
-        productDetails: 'productDetail'
-      }),
-      getName() {
-        if(this.productDetails) {
-          return this.productDetails.name
-        }
-        return ''
-      },
-      getProducts() {
-        if(this.productDetails) {
-          return this.productDetails.productOutcome
-        }
-        return []
+    getProducts() {
+      if (this.productDetails) {
+        let data = this.productDetails.productOutcome
+        data.forEach(item => {
+          item.birligi = this.productDetails.productType
+        });
+        return this.productDetails.productOutcome;
       }
-    }
-  }
+      return [];
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -93,11 +113,11 @@ import { mapState } from 'vuex';
 .search {
   width: 100%;
   padding: 4px 10px;
-  border: 1px solid #4B6B75;
+  border: 1px solid #4b6b75;
   border-radius: 40px;
   color: white;
 }
-::placeholder{
+::placeholder {
   color: white;
   font-size: 15px;
 }

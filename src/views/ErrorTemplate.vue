@@ -1,21 +1,19 @@
 <template>
   <div>
     <div id="notfound">
-		<div class="notfound">
-			<div class="notfound-404">
-				<h1>Oops!</h1>
-				<h2>You do not have access to the page</h2>
-			</div>
-			<router-link to="/">Go to home</router-link>
-		</div>
-	</div>
+      <div class="notfound">
+        <div class="notfound-404">
+          <h1>Oops!</h1>
+          <h2>You do not have access to the page</h2>
+        </div>
+        <router-link to="/">Go to home</router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  export default {
-    
-  }
+export default {};
 </script>
 
 <style scoped>
@@ -29,8 +27,8 @@
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .notfound {
@@ -48,7 +46,7 @@
 }
 
 .notfound .notfound-404 h1 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 236px;
   font-weight: 200;
   margin: 0px;
@@ -58,12 +56,12 @@
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .notfound .notfound-404 h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 24px;
   font-weight: 400;
   text-transform: uppercase;
@@ -79,7 +77,7 @@
 }
 
 .notfound a {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   display: inline-block;
   font-weight: 700;
   text-decoration: none;

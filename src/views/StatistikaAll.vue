@@ -129,7 +129,7 @@ export default {
         };
         return datas;
       }
-      return null
+      return null;
     },
   },
   methods: {

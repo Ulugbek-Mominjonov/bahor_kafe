@@ -5,23 +5,22 @@
 </template>
 
 <script>
-import Chart from 'chart.js'
+import Chart from "chart.js";
 
 export default {
-  name: 'PlanetChart',
+  name: "PlanetChart",
   props: {
     chartData: {
       type: Object,
-      default: null
+      default: null,
     },
   },
-  created() {
-  },
+  created() {},
   mounted() {
-    const ctx = document.getElementById('planet-chart');
+    const ctx = document.getElementById("planet-chart");
     new Chart(ctx, this.chartData);
   },
-}
+};
 </script>
 <style scoped>
 #planet-chart {

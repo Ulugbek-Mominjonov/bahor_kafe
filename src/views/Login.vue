@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import store from '@/store/index';
-import {mapGetters} from 'vuex';
+import store from "@/store/index";
+import { mapGetters } from "vuex";
 export default {
   name: "Home",
   components: {},
@@ -32,41 +32,43 @@ export default {
     return {
       showPassword: false,
       login: null,
-      parol: null
+      parol: null,
     };
   },
   created() {
-    store.commit('director/DisabledSideBar')
+    store.commit("director/DisabledSideBar");
   },
   computed: {
-    ...mapGetters('auth',{
-        getterLoginStatus:'getLoginStatus',
-        getterAuthData: 'getAuthData'
-      })
+    ...mapGetters("auth", {
+      getterLoginStatus: "getLoginStatus",
+      getterAuthData: "getAuthData",
+    }),
   },
   methods: {
-      async sign_in() {
-      let data = {username: this.login, password: this.parol}
-      await store.dispatch('auth/login', data)
+    async sign_in() {
+      let data = { username: this.login, password: this.parol };
+      await store
+        .dispatch("auth/login", data)
         .then(() => {
-          if(this.getterAuthData.role == "waiter"){
-            store.commit('director/DisabledSideBar')
-            this.$router.push({ name: "Home", params: {id: this.getterAuthData.fullName} });
-          }
-          else if(this.getterAuthData.role == "cashier") {
-            store.commit('director/DisabledSideBar')
+          if (this.getterAuthData.role == "waiter") {
+            store.commit("director/DisabledSideBar");
+            this.$router.push({
+              name: "Home",
+              params: { id: this.getterAuthData.fullName },
+            });
+          } else if (this.getterAuthData.role == "cashier") {
+            store.commit("director/DisabledSideBar");
             this.$router.push("/accountant");
-          }
-          else if(this.getterAuthData.role == "director") {
-            store.commit('director/ActiveSideBar')
+          } else if (this.getterAuthData.role == "director") {
+            store.commit("director/ActiveSideBar");
             this.$router.push("/director");
           }
         })
         .catch((err) => {
           console.log(err);
-          alert("Noto'gri malumot")
-        })
-    }
+          alert("Noto'gri malumot");
+        });
+    },
   },
 };
 </script>
@@ -78,7 +80,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 .form {
   position: absolute;

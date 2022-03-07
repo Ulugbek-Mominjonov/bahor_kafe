@@ -3,15 +3,14 @@
     <template v-if="!notEnter">
       <v-card class="tab-wrapper">
         <v-tabs center-active>
+          <v-tab class="tab-item" @click="selectedItem('Barchasi')"
+            >Barchasi</v-tab>
           <v-tab
             class="tab-item"
             v-for="(tab, index) in allFoods"
             :key="index"
             @click="selectedItem(tab.name)"
             >{{ tab.name }}</v-tab
-          >
-          <v-tab class="tab-item" @click="selectedItem('Barchasi')"
-            >Barchasi</v-tab
           >
         </v-tabs>
       </v-card>
@@ -36,7 +35,10 @@
         </div>
         <div class="ordered-list">
           <h2 class="product-name text-center">
-            Zakalar ro'yhati <span class="d-block d-md-inline-block text-center">{{ tableId }} - stoll</span>
+            Zakalar ro'yhati
+            <span class="d-block d-md-inline-block text-center"
+              >{{ tableId }} - stol</span
+            >
           </h2>
           <ul class="selected-list">
             <li class="selected-item">
@@ -65,7 +67,7 @@
 
           <div class="d-flex justify-space-between my-5 changing-buttons">
             <v-btn
-              class="minus-btn"
+              class="minus-btn py-5 px-6"
               dark
               color="error"
               :disabled="selected == null ? true : false"
@@ -75,7 +77,7 @@
             </v-btn>
 
             <v-btn
-              class="plus-btn"
+              class="plus-btn py-5 px-6"
               dark
               color="indigo"
               :disabled="selected == null ? true : false"
@@ -86,7 +88,7 @@
           </div>
 
           <div class="mb-5 d-flex justify-center buttons">
-            <v-btn class="order-btn" dark color="success" @click="order()">
+            <v-btn class="order-btn py-5" dark color="success" @click="order()">
               Zakaz berish
             </v-btn>
           </div>
@@ -339,7 +341,7 @@ export default {
   .products {
     width: 65%;
   }
-  .ordered-list{
+  .ordered-list {
     flex-grow: 1;
   }
 }

@@ -84,7 +84,7 @@ export const actions = {
   createOrder({commit}, id) {
     let data = {
       table: id,
-      clientCount: 0,
+      clientCount: 1,
       details: []
     }
     commit("SET_DETAIL", data)
