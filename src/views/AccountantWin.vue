@@ -6,7 +6,7 @@
           <h2 class="component-title">"Bahor kafe"</h2>
           <p class="component-text">Bag'dod tumani, Bag'dod shaxarchasi</p>
           <v-alert type="success" class="d-inline-block px-14">
-            {{ tableId }} - stoll
+            {{ tableId }} - stol
           </v-alert>
         </div>
         <div v-for="(item, index) in foods" :key="index" class="mb-8">
@@ -20,7 +20,7 @@
             :items-per-page="10"
             class="elevation-1"
             light
-            no-data-text="Bu stoll bo'sh"
+            no-data-text="Bu stol bo'sh"
             hide-default-footer
           ></v-data-table>
           <div class="d-flex total">
@@ -61,7 +61,7 @@
           height="100"
           class="d-flex align-center justify-center"
         >
-          <span>Kerakli Stollni tanlang!!!</span>
+          <span>Kerakli Stolni tanlang!!!</span>
         </v-alert>
         <v-alert
           v-if="isOrder"
@@ -72,7 +72,7 @@
           height="100"
           class="d-flex align-center justify-center"
         >
-          <span>Bu stollda zakazlar mavjud emas</span>
+          <span>Bu stolda zakazlar mavjud emas</span>
         </v-alert>
       </div>
     </div>
@@ -94,7 +94,7 @@
       <template v-if="ordered">
         <div class="check-detail" v-for="(item, index) in ordered.orders" :key="index" v-show="checkData==index">
           <h1 class="text-center">Bahor kafe</h1>
-          <p class="text-center">{{ordered.number}} - stoll</p>
+          <p class="text-center">{{ordered.number}} - stol</p>
           <p class="d-flex justify-space-between">
             <span>Afitsant</span>
             <span>{{item.waiter}}</span>
@@ -114,7 +114,7 @@
             :headers="headersCheck"
             :items="item.detail"
             class="elevation-1"
-            no-data-text="Bu stoll bo'sh"
+            no-data-text="Bu stol bo'sh"
             hide-default-footer
           ></v-data-table>
           <hr class="mt-3">
@@ -131,6 +131,26 @@
           </p>
         </div>
       </template>
+    </div>
+    <div class="text-center">
+      <v-dialog v-model="dialog" width="500">
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            To'lov haqida ma'lumot
+          </v-card-title>
+
+          <v-card-text class="mt-5">
+            <v-alert type="success">{{ orderMessage }}</v-alert>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog = false"> Ok </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -203,7 +223,9 @@ export default {
       isOrder: false,
       message: true,
       checkData: null,
-      date: DateTime.now().toISODate()
+      date: DateTime.now().toISODate(),
+      orderMessage: "",
+      dialog: false
     };
   },
   created() {
@@ -286,7 +308,8 @@ export default {
       };
       EventService.orderUpdate(data.id, data.type)
         .then(() => {
-          alert("To'lov qabul qilindi!");
+          this.orderMessage = "To'lov qabul qilindi!!!"
+          this.dialog = true
           if (this.table.number != 0) {
             this.detail(this.table);
           } else {
@@ -294,7 +317,8 @@ export default {
           }
         })
         .catch(() => {
-          alert("Bu buyurtma uchun pul to'lanib bo'lingan");
+          this.orderMessage = "To'lov qabul qilinmadi!!!"
+          this.dialog = true
         });
     },
     print(value) {

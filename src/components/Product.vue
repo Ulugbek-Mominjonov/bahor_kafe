@@ -81,10 +81,10 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 2px 8px;
+  padding: 5px 12px;
   background: #c4c4c4;
   border-radius: 2px 0px 0px 2px;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 12px;
   color: #000000;
   z-index: 5;

@@ -83,12 +83,12 @@
       </div>
       <v-btn color="warning" dark outlined @click="changeChart()">Umumiy Foyda</v-btn>
     </div>
-    <v-card class="tab-wrapper mb-5">
+    <v-card class="tab-wrapper-stat mb-5">
       <v-tabs
-        center-active
+        v-model="tab"
       >
-        <v-tab class="tab-item" v-for="(tab, index) in allCategory" :key="index"  @click="selectedItem(tab.id)">{{tab.name }}</v-tab>
-        <v-tab class="tab-item" @click="selectedItem('Barchasi')">Barchasi</v-tab>
+        <v-tab class="tab-item" @click="selectedItem('Barchasi')" :class="{'activeTab': tabItem=='Barchasi'}">Barchasi</v-tab>
+        <v-tab class="tab-item" v-for="(tab, index) in allCategory" :key="index"  @click="selectedItem(tab.id)" :class="{'activeTab': tab.id==tabItem}">{{tab.name }}</v-tab>
       </v-tabs>
     </v-card>
     <!-- chart  -->
@@ -113,10 +113,11 @@ import colors from '@/colors.js';
         modaltwo: false,
         modalThree: false,
         toggle_exclusive: undefined,
-        tabItem: "Barchasi",
+        tab: "-1"
       }
     },
     mounted() {
+      store.commit('director/ACTIVE_TAB', localStorage.getItem('foodId'))
       store.commit('director/ActiveSideBar')
       store.dispatch('statistika/category')
       if(localStorage.getItem('foodId') != 'Barchasi'){
@@ -137,6 +138,9 @@ import colors from '@/colors.js';
       }
     },
     computed: {
+      ...mapState('director', {
+        tabItem: 'tabItem'
+      }),
       ...mapState('statistika', {
         allCategory: 'allCategory',
         foods: 'allFoods',
@@ -190,7 +194,6 @@ import colors from '@/colors.js';
     },
     methods: {
       selectedItem(payload) {
-        this.tabItem = payload
         localStorage.setItem('foodId', payload)
         localStorage.removeItem('last')
         localStorage.removeItem('current')
@@ -304,4 +307,11 @@ button {
 .start-date {
   margin-right: 25px !important;
 }
+.activeTab.tab-item {
+  color: #fff !important;
+}
+.activeTab {
+  background-color: #006d7c !important;
+}
+
 </style>

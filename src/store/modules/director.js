@@ -7,6 +7,7 @@ export const state = {
   outcome: null,
   sideBar: false,
   productDetail: null,
+  tabItem: null
 }
 export const mutations = {
   SET_INCOME(state, payload) {
@@ -20,6 +21,9 @@ export const mutations = {
   },
   ActiveSideBar(state) {
     state.sideBar = true
+  },
+  ACTIVE_TAB(state, payload) {
+    state.tabItem = payload
   },
   DisabledSideBar(state) {
     state.sideBar = false

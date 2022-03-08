@@ -277,6 +277,12 @@ svg {
   font-size: 14px !important;
   font-weight: 900 !important;
 }
+.tab-wrapper-stat .v-tabs-slider-wrapper {
+  height: 0 !important;
+}
+.tab-wrapper-stat .v-tab--active {
+  color: rgba(0,0,0,.54) !important;
+}
 @media print {
   .site-main .v-main__wrap {
     margin-left: 0;
