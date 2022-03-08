@@ -278,9 +278,7 @@ export default {
       });
     },
     submit() {
-      if (this.orderMessage == "Zakaz bekor qilindi!") {
-        this.$router.push("/home");
-      }
+      this.$router.push("/home");
       this.dialog = false;
     },
   },

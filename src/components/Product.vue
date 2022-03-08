@@ -81,12 +81,13 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 5px 12px;
+  padding: 8px 14px;
   background: #c4c4c4;
   border-radius: 2px 0px 0px 2px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 12px;
-  color: #000000;
+  font-weight: 500;
+  color: #222;
   z-index: 5;
 }
 .name {
