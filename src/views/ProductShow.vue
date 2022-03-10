@@ -162,11 +162,6 @@
             <span>{{getAfitsant}}</span>
           </p>
           <hr class="mt-3">
-          <p class="d-flex justify-space-between">
-            <span>Klientlar soni</span>
-            <span>{{ordered.clientCount}}</span>
-          </p>
-          <hr class="mt-3">
           <v-data-table
             :headers="headersCheck"
             :items="ordered.details"
