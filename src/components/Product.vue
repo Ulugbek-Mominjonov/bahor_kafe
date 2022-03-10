@@ -60,6 +60,7 @@ export default {
   line-height: 21px;
   text-align: center;
   text-transform: uppercase;
+  user-select: none;
 }
 .product-list {
   display: flex;

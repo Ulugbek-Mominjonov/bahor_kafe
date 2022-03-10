@@ -86,6 +86,7 @@
     <v-card class="tab-wrapper-stat mb-5">
       <v-tabs
         v-model="tab"
+        show-arrows=""
       >
         <v-tab class="tab-item" @click="selectedItem('Barchasi')" :class="{'activeTab': tabItem=='Barchasi'}">Barchasi</v-tab>
         <v-tab class="tab-item" v-for="(tab, index) in allCategory" :key="index"  @click="selectedItem(tab.id)" :class="{'activeTab': tab.id==tabItem}">{{tab.name }}</v-tab>
@@ -113,7 +114,7 @@ import colors from '@/colors.js';
         modaltwo: false,
         modalThree: false,
         toggle_exclusive: undefined,
-        tab: "-1"
+        tab: 0
       }
     },
     mounted() {
@@ -225,17 +226,11 @@ import colors from '@/colors.js';
 </script>
 
 <style scoped>
-.container {
-  max-width: 1440px;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
 .wrapper {
   display: flex;
 }
 .main {
-  flex-grow: 1;
+  width: calc(100% - 83px);
 }
 .header {
   display: flex;
@@ -246,18 +241,6 @@ import colors from '@/colors.js';
   padding-bottom: 10px;
   padding-left: 30px;
   padding-right: 30px;
-}
-.search-wrapper {
-  position: relative;
-  width: 35%;
-  flex-grow: 0;
-}
-.search {
-  width: 100%;
-  padding: 4px 10px;
-  border: 1px solid #4B6B75;
-  border-radius: 40px;
-  color: white;
 }
 ::placeholder{
   color: white;

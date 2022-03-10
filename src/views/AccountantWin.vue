@@ -291,6 +291,7 @@ export default {
       this.message = false;
       store.dispatch("cashier/getDatail", payload.id).then(() => {
         if (payload.number == 0 && this.foods.length == 0) {
+          localStorage.setItem("saboy", payload.number)
           this.$router.push({ name: "AddOrder", params: { id: payload.id } });
         } else if (this.foods.length == 0) {
           this.isOrder = true;
@@ -313,7 +314,9 @@ export default {
           if (this.table.number != 0) {
             this.detail(this.table);
           } else {
-            location.reload();
+            setInterval(() => {
+              location.reload();
+            }, 800);
           }
         })
         .catch(() => {

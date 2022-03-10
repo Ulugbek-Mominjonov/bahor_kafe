@@ -168,8 +168,11 @@ export default {
 
 <style>
 html {
-  box-sizing: border-box;
+  box-sizing: border-box ;
 }
+/* *, *::before, *::after {
+  box-sizing: inherit !important;
+} */
 /* width */
 ::-webkit-scrollbar {
   width: 7px;
@@ -212,7 +215,7 @@ html {
   color: white !important;
 }
 .site-main .v-main__wrap {
-  display: flex !important;
+  /* display: flex !important; */
   margin-left: 82px;
 }
 /* SIDE BAR  */
@@ -259,7 +262,7 @@ svg {
 /* ProductDetailIncome  */
 .deatil-data-table tr:last-child,
 .sales-data-table tr:last-child {
-  background-color: #006d7c;
+  background-color: #006d7c; 
   color: white;
 }
 .deatil-data-table tr:last-child:hover,
