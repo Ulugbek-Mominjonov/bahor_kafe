@@ -92,10 +92,10 @@
       <v-data-table
         :headers="headers"
         :items="getSaleFoods"
+        :items-per-page="15"
         class="elevation-1"
         light
         :no-data-text="noDate"
-        hide-default-footer
         :search="search"
         @click:row="handleClick"
       >
