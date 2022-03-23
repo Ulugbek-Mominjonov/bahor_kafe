@@ -7,6 +7,7 @@ import * as director from "@/store/modules/director.js";
 import * as sales from "@/store/modules/sales.js";
 import * as afitsant from "@/store/modules/afitsant.js";
 import * as statistika from "@/store/modules/statistika.js";
+import * as chef from "@/store/modules/chef.js";
 
 
 Vue.use(Vuex);
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     director,
     sales ,
     afitsant,
-    statistika
+    statistika,
+    chef
   }
 });

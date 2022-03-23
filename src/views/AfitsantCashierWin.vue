@@ -6,7 +6,7 @@
           type="text"
           v-model="search"
           class="search"
-          placeholder="search"
+          placeholder="Qidiruv"
         />
         <v-icon dark class="icon">mdi-magnify</v-icon>
       </div>

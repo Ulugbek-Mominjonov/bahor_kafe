@@ -62,6 +62,8 @@ export default {
           } else if (this.getterAuthData.role == "director") {
             store.commit("director/ActiveSideBar");
             this.$router.push("/director");
+          } else if (this.getterAuthData.role == "chef") {
+            this.$router.push("/chef");
           }
         })
         .catch((err) => {

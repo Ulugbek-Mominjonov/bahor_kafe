@@ -11,12 +11,12 @@
         <v-card-title> Ushbu stoldagi zakazlar </v-card-title>
         <v-card-actions class="justify-center flex-wrap">
           <v-btn
-            class="mx-2"
+            class="mx-2 mb-2"
             fab
             dark
-            color="cyan"
             v-for="(item, index) in getOrdersOnTables"
             :key="index"
+            :class="{'yellow': item.status == 'cooked', 'red': item.status == 'cooking', 'green': item.status == 'given'}"
             @click="changeOrder(item.id)"
           >
             {{ item.todayId }}
@@ -97,5 +97,8 @@ export default {
 }
 .active {
   background-color: red;
+}
+.stoll-link .cooked {
+  background-color: #4caf50 !important;
 }
 </style>

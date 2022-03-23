@@ -6,7 +6,7 @@
           type="text"
           v-model="search"
           class="search"
-          placeholder="search"
+          placeholder="Qidiruv"
         />
         <v-icon dark class="icon">mdi-magnify</v-icon>
       </div>
@@ -15,13 +15,12 @@
           ref="dialogtwo"
           v-model="modaltwo"
           :return-value.sync="date"
-          persistent
           width="290px"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="date"
-              label="Start date"
+              label="...dan"
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
@@ -31,23 +30,22 @@
             ></v-text-field>
           </template>
           <v-date-picker v-model="date" scrollable>
+            <v-btn text small max-width="30px" color="red" @click="modaltwo = false"> Bekor qilish </v-btn>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="$refs.dialogtwo.save(date)">
-              OK
+            <v-btn text small max-width="30px" color="primary" @click="$refs.dialogtwo.save(date)">
+              Qabul qilish
             </v-btn>
           </v-date-picker>
         </v-dialog>
         <v-dialog
           ref="dialogthree"
           v-model="modalThree"
-          persistent
           width="290px"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="dateTwo"
-              label="Finish date"
+              label="gacha..."
               prepend-icon="mdi-calendar"
               readonly
               v-bind="attrs"
@@ -56,9 +54,9 @@
             ></v-text-field>
           </template>
           <v-date-picker v-model="dateTwo" scrollable>
+            <v-btn text small max-width="30px" color="red" @click="modalThree = false"> Bekor qilish </v-btn>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="setDate('toFrom')"> OK </v-btn>
+            <v-btn text small max-width="30px" color="primary" @click="setDate('toFrom')"> Qabul qilish </v-btn>
           </v-date-picker>
         </v-dialog>
       </div>
@@ -93,9 +91,9 @@
       </v-btn-toggle>
       <v-dialog ref="dialog" v-model="modal" width="290px">
         <v-date-picker v-model="date" scrollable>
+          <v-btn text small max-width="30px" color="red" @click="modal = false"> Bekor qilish </v-btn>
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="modal = false"> Cancel </v-btn>
-          <v-btn text color="primary" @click="setDate('calendar')"> OK </v-btn>
+          <v-btn text small max-width="30px" color="primary" @click="setDate('calendar')"> Qabul qilish </v-btn>
         </v-date-picker>
       </v-dialog>
     </div>

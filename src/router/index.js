@@ -17,6 +17,7 @@ import ErrorTemplate from '@/views/ErrorTemplate.vue';
 import Statistika from '@/views/Statistika.vue';
 import StatistikaAll from '@/views/StatistikaAll.vue';
 import AddOrder from '@/views/AddOrder.vue';
+import Chief from '@/views/Chief.vue';
 const routes = [
   {
     path: "/",
@@ -144,6 +145,14 @@ const routes = [
     },
   },
   {
+    path: "/chef",
+    name: "Chef",
+    component: Chief,
+    meta: {
+      role: 'chef',
+    },
+  },
+  {
     path: '/403',
     name: 'error.403',
     component: ErrorTemplate,
@@ -164,6 +173,9 @@ router.beforeEach((to, from, next) => {
   }
   else if (to.fullPath == "/" && localStorage.getItem('access_token') && localStorage.getItem('role') == 'cashier') {
     next({name: "AccountantWindow"})
+  }
+  else if (to.fullPath == "/" && localStorage.getItem('access_token') && localStorage.getItem('role') == 'chef') {
+    next({name: "Chef"})
   }
   else if (to.fullPath == "/" && localStorage.getItem('access_token') && localStorage.getItem('role') == 'director') {
     next({name: "director"})

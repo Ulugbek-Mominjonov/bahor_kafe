@@ -184,6 +184,12 @@ export default {
         dateAfter: current
       }
     })
+  },
+  getChiefOrder() {
+    return instance.get('/api/cafe/chef/')
+  },
+  updateStatus(id, payload) {
+    return instance.put(`/api/cafe/chef/${id}/`, payload)
   }
 
 };

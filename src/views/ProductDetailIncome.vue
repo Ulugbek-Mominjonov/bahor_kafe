@@ -6,14 +6,14 @@
           type="text"
           v-model="search"
           class="search"
-          placeholder="search"
+          placeholder="Qidiruv"
         />
         <v-icon dark class="icon">mdi-magnify</v-icon>
       </div>
     </div>
 
     <v-alert type="success" color="#006D7C" class="alert"
-      >Kelgan <span class="text-capitalize" style="color: rgba(0,0,0,.87); font-weight: bold;">{{ getName }}</span> mahsulot</v-alert
+      >Kelgan <span class="text-capitalize" style="color: rgb(215 202 202 / 87%); font-weight: bold;">{{ getName }}</span> mahsulot</v-alert
     >
 
     <div class="data-table deatil-data-table">
